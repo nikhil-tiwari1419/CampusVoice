@@ -17,7 +17,7 @@ function emailTemplate(bodyHTML) {
 const sendEmail = async ({ to, subject, html }) => {
     try {
         await axios.post('https://api.brevo.com/v3/smtp/email', {
-            sender: { name: 'Beacon', email: process.env.BREVO_SENDER_EMAIL },
+            sender: { name: 'CampusVoice', email: process.env.BREVO_SENDER_EMAIL },
             to: [{ email: to }],
             subject,
             htmlContent: html
@@ -35,10 +35,10 @@ const sendEmail = async ({ to, subject, html }) => {
 export async function sendWelcomeEmail(email, username) {
     await sendEmail({
         to: email,
-        subject: "Welcome to Beacon!",
+        subject: "Welcome to CampusVoice!",
         html: emailTemplate(
             `<h2> welcome ${username}!🎉</h2>
-            <p>We're excited to have you on Beacon.</p>
+            <p>We're excited to have you on CampusVoice.</p>
             <p></p>
             `
         )
@@ -49,8 +49,8 @@ export async function sendOTPEmail(email, otp, purpose = "verify") {
     // console.log("OTP Email Function Called");
     // console.log({ email, otp, purpose });
     const subject = {
-        verify: "verify your Email - Beacon",
-        forgot: "Reset password OTP - Beacon",
+        verify: "verify your Email - CampusVoice",
+        forgot: "Reset password OTP - CampusVoice",
     };
 
     await sendEmail({

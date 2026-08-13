@@ -386,7 +386,7 @@ async function resetPassword(req, res) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const otpRecord = await OTPModel.findOne({
+        const otpRecord = await otpModel.findOne({
             email,
             otp,
             purpose: 'forgot',
@@ -409,7 +409,7 @@ async function resetPassword(req, res) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        await OTPModel.deleteMany({ email, purpose: 'forgot' });
+        await otpModel.deleteMany({ email, purpose: 'forgot' });
 
         res.status(200).json({ message: "Password reset successfully!" });
         sendPasswordResetEmail(email, user.username)
