@@ -1,7 +1,6 @@
 import config from '../config/config.js';
 import { generateAccesToken, generateRefreshToken } from '../utils/token.js';
 import refreshTokenModel from '../model/refreshToken.model.js';
-import { get } from 'mongoose';
 
 const isProduction = config.NODE_ENV === "production";
 export const googleCallback = async (req, res) => {

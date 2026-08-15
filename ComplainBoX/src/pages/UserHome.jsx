@@ -1,10 +1,11 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Layout/Navbar'
 function Home() {
   return (
-    <div> 
-        <Navbar/>
+    <div className='text-white'> 
+      
         <h2> Complain Box Portal </h2>
+       
     </div>
   )
 }
