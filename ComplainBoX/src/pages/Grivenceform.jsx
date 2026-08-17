@@ -2,7 +2,23 @@ import React from 'react'
 
 function ComplainBox() {
   return (
-    <div>ComplainBox</div>
+    <>
+      <section>
+        {/* cateegory */}
+      </section>
+
+      <section>
+        {/* TEXT AREA  */}
+      </section>
+      
+      <section>
+        {/* student vote */}
+      </section>
+
+      <button>
+        {/* submit */}
+      </button>
+    </>
   )
 }
 
