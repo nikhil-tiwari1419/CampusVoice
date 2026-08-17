@@ -38,6 +38,12 @@ function LandingPage() {
             >
               How It Works
             </NavLink>
+            <NavLink
+              to="/Login"
+              className="bg-white hover:bg-gray-100 text-gray-700 font-medium px-8 py-3 rounded-xl border border-gray-200 shadow-sm transition w-full sm:w-auto"
+            >
+              Login/Sign up
+            </NavLink>
           </div>
         </section>
 

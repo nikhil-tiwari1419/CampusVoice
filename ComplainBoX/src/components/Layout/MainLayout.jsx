@@ -5,11 +5,11 @@ import Footer from './Footer'
 function MainLaout() {
   return (
     <>
-    <Navbar/>
-    <main className=' min-h-[94vh] '>
-    <Outlet/>
-    </main>
-    <Footer/>
+      <Navbar />
+      <main className=' min-h-[94vh] '>
+        <Outlet />
+      </main>
+      <Footer />
     </>
   )
 }
