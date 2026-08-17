@@ -1,10 +1,7 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-
 function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar />
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
