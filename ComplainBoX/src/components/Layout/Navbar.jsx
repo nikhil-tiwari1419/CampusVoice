@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import React, { useState } from 'react'
+=======
+import { User } from 'lucide-react'
+import React from 'react'
+>>>>>>> 932bd14ae09f8e28e92cdfa08b8314ccb3058f0e
 import { NavLink } from 'react-router-dom'
 import { Menu, X, GraduationCap } from 'lucide-react'
 
@@ -37,6 +42,7 @@ function Navbar() {
           </span>
         </div>
 
+<<<<<<< HEAD
         {/* Desktop nav links */}
         <ul className="hidden md:flex gap-2">
           {navLinks.map(({ to, label, end }) => (
@@ -77,6 +83,14 @@ function Navbar() {
               </NavLink>
             </li>
           ))}
+=======
+        <ul className="flex gap-2">
+          <li><NavLink to="/" className={navLinkClass} end>Home</NavLink></li>
+          <li><NavLink to="/userhome" className={navLinkClass}>userHome</NavLink></li>
+          <li><NavLink to="/about" className={navLinkClass}>About</NavLink></li>
+          <li><NavLink to="/complain" className={navLinkClass}>File a Complaint</NavLink></li>
+          <li><NavLink to="/contact" className={navLinkClass}>Contact</NavLink></li>
+>>>>>>> 932bd14ae09f8e28e92cdfa08b8314ccb3058f0e
         </ul>
       </div>
     </nav>

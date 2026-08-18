@@ -64,6 +64,7 @@ function ContactUs() {
   ]
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gray-50 py-16 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
@@ -178,6 +179,23 @@ function ContactUs() {
         </div>
       </div>
     </div>
+=======
+    <>
+      <section>
+        {/*  user info  */}
+      </section>
+
+      <section>
+        {/* text aarea  */}
+      </section>
+
+      <div>
+
+        {/* button  */}
+
+      </div>
+    </>
+>>>>>>> 932bd14ae09f8e28e92cdfa08b8314ccb3058f0e
   )
 }
 

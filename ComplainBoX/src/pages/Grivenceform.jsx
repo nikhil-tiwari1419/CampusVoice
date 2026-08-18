@@ -41,6 +41,7 @@ function Grivenceform() {
   }
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
@@ -105,6 +106,25 @@ function Grivenceform() {
         </p>
       </div>
     </div>
+=======
+    <>
+      <section>
+        {/* cateegory */}
+      </section>
+
+      <section>
+        {/* TEXT AREA  */}
+      </section>
+      
+      <section>
+        {/* student vote */}
+      </section>
+
+      <button>
+        {/* submit */}
+      </button>
+    </>
+>>>>>>> 932bd14ae09f8e28e92cdfa08b8314ccb3058f0e
   )
 }
 

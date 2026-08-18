@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, NavLink } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    errorElement: <div>Something went wrong. <a href="/">Go home</a></div>,
+    errorElement: <div>Something went wrong. <NavLink to="/">Go home</NavLink></div>,
     children: [
       { index: true, element: withSuspense(LandingPage) },
       { path: 'userhome', element: withSuspense(UserHome) },
