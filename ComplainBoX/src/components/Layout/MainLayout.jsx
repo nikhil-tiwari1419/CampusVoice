@@ -6,7 +6,7 @@ function MainLaout() {
   return (
     <>
     <Navbar/>
-    <main className='md:pl-64 min-h-[94vh]  md:pb-0 text-white font-mono bg-black'>
+    <main className=' min-h-[94vh] '>
     <Outlet/>
     </main>
     <Footer/>
@@ -15,4 +15,3 @@ function MainLaout() {
 }
 
 export default MainLaout
-
