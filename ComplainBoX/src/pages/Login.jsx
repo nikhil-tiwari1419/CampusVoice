@@ -58,7 +58,7 @@ export default function Login() {
           backgroundImage:
             "linear-gradient(#7C8598 1px, transparent 1px), linear-gradient(90deg, #7C8598 1px, transparent 1px)",
           backgroundSize: "42px 42px",
-        }}
+        }} 
       />
 
       <div className="relative w-full max-w-sm">
