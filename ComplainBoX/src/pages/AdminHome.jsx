@@ -101,7 +101,6 @@ function AdminHome() {
   })
 
   return (
-<<<<<<< HEAD
     <div className="min-h-screen bg-gray-50 py-10 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -224,11 +223,6 @@ function AdminHome() {
         </div>
       </div>
     </div>
-=======
-    <>
-    
-    </>
->>>>>>> 932bd14ae09f8e28e92cdfa08b8314ccb3058f0e
   )
 }
 
