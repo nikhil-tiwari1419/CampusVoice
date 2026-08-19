@@ -250,14 +250,14 @@ async function refreshAccessToken(req, res) {
         if (storedToken.expiresAt < new Date()) {
             await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
             res.clearCookie('accesstoken');
-            res.clearCookie('refreshToekn');
+            res.clearCookie('refreshToken');
             return res.status(401).json({ message: "Refresh token expired , please login again " });
         }
 
         //fetch full user to get role this help when user come to login 
         const user = await userModel.findById(storedToken.userId).select('_id username email role');
         if (!user) {
-            await refreshTokenModel.deleteOne({ token: refreshToken });
+            await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
             res.clearCookie('accesstoken');
             res.clearCookie('refreshToken');
             return res.status(401).json({
@@ -266,7 +266,7 @@ async function refreshAccessToken(req, res) {
         }
 
         // now role is include to new token 
-        await refreshTokenModel.deleteOne({ token: refreshToken });
+        await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
         const newRefreshToken = await generateRefreshToken(user._id);
         const newAccessToken = generateAccesToken(user);
 
