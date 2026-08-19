@@ -5,9 +5,9 @@ import config from '../config/config.js';
 function emailTemplate(bodyHTML) {
     return `
     <div>
-        <div> MusicMenia</div>
+        <div> CampusVoice </div>
         <div>${bodyHTML}</div>
-        <div>© ${new Date().getFullYear()} MusicMenia</div>
+        <div>© ${new Date().getFullYear()} CampusVoice</div>
     </div>
     `;
 }
@@ -73,7 +73,7 @@ export async function sendOTPEmail(email, otp, purpose = "verify") {
 export async function sendPasswordResetEmail(email, username) {
     await sendEmail({
         to: email,
-        subject: "Password Reset Successful - MusicMenia",
+        subject: "Password Reset Successful - CampusVoice",
         html: emailTemplate(`
             <h3>Hi ${username}, 👋</h3>
             <p >Your password has been changed successfully.</p>

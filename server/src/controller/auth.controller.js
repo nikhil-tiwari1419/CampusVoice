@@ -237,7 +237,7 @@ async function refreshAccessToken(req, res) {
         }
 
         //DB mein check karo
-        const storedToken = await refreshTokenModel.findOne({ token: refreshToken });
+        const storedToken = await refreshTokenModel.findOne({ accesstoken: refreshToken });
 
         if (!storedToken) {
             //clear bad cookies 
@@ -248,7 +248,7 @@ async function refreshAccessToken(req, res) {
         }
 
         if (storedToken.expiresAt < new Date()) {
-            await refreshTokenModel.deleteOne({ token: refreshToken });
+            await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
             res.clearCookie('accesstoken');
             res.clearCookie('refreshToekn');
             return res.status(401).json({ message: "Refresh token expired , please login again " });
@@ -318,7 +318,7 @@ async function logOut(req, res) {
 
         //Refresh token DB se delete kkaro
         if (refreshToken) {
-            await refreshTokenModel.deleteOne({ token: refreshToken });
+            await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
         }
 
         //dono cookies clear 

@@ -10,7 +10,7 @@ const loginLimiter = ratelimiter({ // 15 min
 const registerLimiter = ratelimiter({ //30 min
     windowMs: 30 * 60 * 1000,
     max: 18,
-    message: { message: "Too many account created! Try afetr 30 after" }
+    message: { message: "Too many account created! Try after 30 min" }
 });
 
 const otpLimiter = ratelimiter({ // 10 min

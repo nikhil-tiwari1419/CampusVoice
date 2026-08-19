@@ -7,7 +7,7 @@ const protect = (req, res, next) => {
 
     if (!token) {
         const autHeader = req.headers.authorization;
-        if (autHeader && autHeader.startWith("Bearer ")) {
+        if (autHeader && autHeader.startsWith("Bearer ")) {
             token = autHeader.split(" ")[1];
         }
     }

@@ -46,7 +46,7 @@ export async function authAdmin(req, res, next) {
     try {
         const accesstoken = req.cookies?.accesstoken || req.headers.authorization?.split(" ")[1];
         if (!accesstoken) {
-            return req.status(401).json({
+            return res.status(401).json({
                 message: "Unauthorised admin"
             });
         }

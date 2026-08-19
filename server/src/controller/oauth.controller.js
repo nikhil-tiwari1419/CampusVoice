@@ -40,15 +40,15 @@ export const getProfile = (req, res) => {
 export const logOut = async (req, res) => {
     try {
         const refreshToekn = req.cookies?.refreshToekn;
-        if (!refreshToekn) {
+        if (refreshToekn) {
             await refreshTokenModel.deleteOne({ accesstoken: refreshToekn });
         }
 
         res.clearCookie('accesstoken');
         res.clearCookie('refreshToken');
-        res.jaon({ mesage: "Loggout out succesfullu " });
+        res.json({ mesage: "Loggout out succesfullu " });
     } catch (error) {
-        console.error("Error in logout:", err);
+        console.error("Error in logout:", error);
         res.status(500).json({ message: "Logout failed" });
     }
 };
