@@ -1,4 +1,4 @@
-import JsonWebToken, { decode } from "jsonwebtoken";
+import JsonWebToken from "jsonwebtoken";
 import blacklistTokenModel from "../model/blacklistToken.model.js";
 import config from "../config/config.js";
 

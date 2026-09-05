@@ -1,4 +1,4 @@
-import mongoose from mongoose
+import mongoose from 'mongoose'
 // models/Batch.js
 const batchSchema = new mongoose.Schema({
     program: {
@@ -19,5 +19,6 @@ const batchSchema = new mongoose.Schema({
 
 batchSchema.index({ program: 1, branch: 1, year: 1 }, { unique: true });
 
-module.exports = mongoose.model('Batch', batchSchema);
+export default mongoose.model('Batch', batchSchema);
+
 

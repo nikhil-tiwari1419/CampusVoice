@@ -1,4 +1,4 @@
-import mongoose from mongoose
+import mongoose from 'mongoose'
 
 const programSchema = new mongoose.Schema({
     name :{ 
@@ -16,4 +16,5 @@ const programSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Program',programSchema)
+export default mongoose.model('Program',programSchema)
+

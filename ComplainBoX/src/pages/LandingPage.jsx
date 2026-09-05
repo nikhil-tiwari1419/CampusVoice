@@ -13,6 +13,8 @@ function LandingPage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Hero */}
       <main className="flex-1">
+
+{/* "use client"; */}
         <section className="max-w-4xl mx-auto text-center px-6 py-24">
           <span className="inline-block bg-blue-50 text-blue-600 text-sm font-medium px-4 py-1 rounded-full mb-4">
             Powered by ComplainBoX

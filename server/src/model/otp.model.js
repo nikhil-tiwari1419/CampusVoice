@@ -14,12 +14,17 @@ const otpSchema = new mongoose.Schema({
         enum: ['verify', 'forgot', 'login'],
         required: true
     },
+    registration: {
+        username:{ type: String, trim:true},
+        password:{ type: String }
+    },
     expiresAt: {
-        type: Date, default: () => new Date(Date.now() + 5 * 60 * 1000)
-    }// 5 min
+        type: Date, default: () => new Date(Date.now() + 10 * 60 * 1000)
+    }// 10 min
 }, {timestamps: true });
 
 // Auto delete expired OTPs
 otpSchema.index({expiresAt: 1 }, {expireAfterSeconds: 0});
 
 export default mongoose.model('OTP', otpSchema);
+

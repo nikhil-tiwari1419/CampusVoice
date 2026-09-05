@@ -3,9 +3,8 @@ import bcrypt from "bcryptjs"
 import blacklistToken from '../model/blacklistToken.model.js'
 import refreshTokenModel from "../model/refreshToken.model.js";
 import userModel from "../model/user.model.js";
-import config from "../config/config.js";
 import otpModel from "../model/otp.model.js";
-import { sendWelcomeEmail, sendOTPEmail, sendPasswordResetEmail } from "../utils/mailer.js"
+import { sendWelcomeEmail, sendOTPEmail, sendPasswordResetEmail } from "../utils/mailer.js";
 import { generateAccesToken, generateRefreshToken } from "../utils/token.js";
 
 
@@ -26,67 +25,58 @@ async function registerUser(req, res) {
             });
         }
 
-        const isUserAlreadyExist = await userModel.findOne({
-            $or: [
-                { username },
-                { email }
-            ]
-        });
+        const normalizedEmail = email.trim().toLowerCase();
+        const normalizedUsername = username.trim();
+
+        const isUserAlreadyExist = await userModel.findOne({ email: normalizedEmail });
 
         if (isUserAlreadyExist) {
             return res.status(409).json({
                 success: false,
-                message: "Username or email Already exist"
+                message: "this email Already exist"
             });
         }
 
         const hash = await bcrypt.hash(password, 10);
+
         const user = await userModel.create({
-            username,
-            email,
+            username: normalizedUsername,
+            email: normalizedEmail,
             password: hash,
-            role: "user",
+            role: 'user',
             isVerified: false
         });
 
-        // send welcome + verify OTP
+        // verify OTP
         const otp = generateOTP();
-        // OTP db se ayega
-        await otpModel.create({ email, otp, purpose: 'verify' });
 
-        sendWelcomeEmail(email, username).catch(err => console.log('welcome email failed:', err));
-        sendOTPEmail(email, otp).catch(err => console.log('OTP email Failed:', err));
+        await otpModel.deleteMany({
+            email: normalizedEmail,
+            purpose: 'verify'
+        });
 
-        return res.status(201).json({
+        await otpModel.create({
+            email: normalizedEmail,
+            otp,
+            purpose: 'verify'
+        });
+
+        sendOTPEmail(normalizedEmail, otp, 'verify').catch(err => console.log('OTP email Failed:', err));
+
+        res.status(201).json({
             success: true,
             message: "Regesterd! please verify Your  email with OTP sent ",
         });
 
-        const accesstoken = JsonWebTokenError.sign({
-            id: user._id,
-            role: user.role,
-        }, config.JWT_SECRET, { expiresIn: "15m" })
-
-        res.cookie('accesstoken', token, {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            maxAge: 15 * 60 * 1000
-        })
-
-        return res.status(201).json({
-            message: "User regestered succesfully",
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                role: user.role,
-            }
-        })
-
     } catch (error) {
+
+        if (error.code === 11000) {
+            return res.status(404).json({
+                success: false,
+                message: "Email already exist"
+            });
+        }
         console.error("Register error", error);
-        console.log(error)
         res.status(500).json({
             success: false,
             message: "Error occure in reistering the user"
@@ -105,23 +95,33 @@ async function verifyEmail(req, res) {
             });
         }
 
-        const otpRecord = await otpModel.findOne({
-            email,
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const otpRecord = await otpModel.findOneAndDelete({
+            email: normalizedEmail,
             otp,
             purpose: 'verify',
-            expiresAt: {
-                $gt: new Date()
-            }
+            expiresAt: { $gt: new Date() }
         });
 
         if (!otpRecord) {
             return res.status(400).json({
+                success: false,
                 message: "Invalid or expired OTP"
             });
         }
 
-        await userModel.findOneAndUpdate({ email }, { isVerified: true });
-        await otpModel.deleteMany({ email, purpose: 'verify' });
+        const user = await userModel.findOneAndUpdate(
+            { email: normalizedEmail },
+            { isVerified: true },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Registration expired . Please register again.' });
+        }
+
+        // sendWelcomeEmail(email, username).catch(err => console.log('Welcome email failed:', err));
 
         res.status(200).json({
             success: true,
@@ -129,8 +129,9 @@ async function verifyEmail(req, res) {
         });
 
     } catch (error) {
-        console.error("Verifyed error", error);
+        console.error("Verifyed error", error.message);
         res.status(500).json({
+            success: false,
             message: "Email is nott verifyed "
         });
     }
@@ -140,33 +141,31 @@ async function verifyEmail(req, res) {
 async function login(req, res) {
 
     try {
-        const { username, email, password } = req.body;
-        if (!password || (!username && !email)) {
+        const { email, password } = req.body;
+        const normalizedEmail = email?.trim().toLowerCase();
+
+        if (!password || !normalizedEmail) {
             return res.status(400).json({
                 message: "Please provide email and password"
             });
         }
-        const user = await userModel.findOne({
-            $or: [
-                ...(username ? [{ username }] : []),
-                ...(email ? [{ email }] : [])
-            ]
-        }).select('+password')
+
+        const user = await userModel.findOne({ email: normalizedEmail }).select("+password");
 
         if (!user) {
             return res.status(401).json({
                 message: " Inavlid creadintial , user not found with this username or email"
             });
-
         }
 
-        const isPassowrdValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await bcrypt.compare(password, user.password)
 
-        if (!isPassowrdValid) {
+        if (!isPasswordValid) {
             return res.status(401).json({
                 message: "Invalid creadintial"
             })
         }
+
         //is email  verifyed
         if (!user.isVerified) {
             //Resend otp 
@@ -350,14 +349,15 @@ async function logOut(req, res) {
 async function forgotPassword(req, res) {
     try {
         const { email } = req.body;
+        const normalizedEmail = email?.trim().toLowerCase();
 
-        if (!email) {
+        if (!normalizedEmail) {
             return res.status(400).json({
                 message: "Email is required"
             });
         }
 
-        const user = await userModel.findOne({ email });
+        const user = await userModel.findOne({ email: normalizedEmail });
         if (!user) {
             return res.status(200).json({
                 message: "If that email exist, an OTP has been sent"
@@ -365,12 +365,12 @@ async function forgotPassword(req, res) {
         };
 
         const otp = generateOTP();
-        await otpModel.deleteMany({ email, purpose: 'forgot' });
-        await otpModel.create({ email, otp, purpose: 'forgot' });
+        await otpModel.deleteMany({ email: normalizedEmail, purpose: 'forgot' });
+        await otpModel.create({ email: normalizedEmail, otp, purpose: 'forgot' });
 
         res.status(200).json({ message: "otp sent to your email" });
 
-        sendOTPEmail(email, otp, 'forgot').catch(err => console.error('Otp email failed:', err));
+        sendOTPEmail(normalizedEmail, otp, 'forgot').catch(err => console.error('Otp email failed:', err));
 
     } catch (error) {
         console.error("Otp function failed", error)
@@ -382,12 +382,14 @@ async function forgotPassword(req, res) {
 async function resetPassword(req, res) {
     try {
         const { email, otp, newPassword } = req.body;
-        if (!email || !otp || !newPassword) {
+        const normalizedEmail = email?.trim().toLowerCase();
+
+        if (!normalizedEmail || !otp || !newPassword) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
         const otpRecord = await otpModel.findOne({
-            email,
+            email: normalizedEmail,
             otp,
             purpose: 'forgot',
             expiresAt: { $gt: new Date() }
@@ -400,7 +402,7 @@ async function resetPassword(req, res) {
         const hash = await bcrypt.hash(newPassword, 10);
 
         const user = await userModel.findOneAndUpdate(
-            { email },
+            { email: normalizedEmail },
             { password: hash },
             { new: false }
         );
@@ -409,10 +411,10 @@ async function resetPassword(req, res) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        await otpModel.deleteMany({ email, purpose: 'forgot' });
+        await otpModel.deleteMany({ email: normalizedEmail, purpose: 'forgot' });
 
         res.status(200).json({ message: "Password reset successfully!" });
-        sendPasswordResetEmail(email, user.username)
+        sendPasswordResetEmail(normalizedEmail, user.username)
             .catch(err => console.error('Password reset email failed:', err));
 
 
@@ -448,7 +450,5 @@ async function IsAuth(req, res) {
     }
 }
 
-export default { registerUser, verifyEmail, login, logOut, IsAuth, resetPassword, forgotPassword,refreshAccessToken }
-
-
+export default { registerUser, verifyEmail, login, logOut, IsAuth, resetPassword, forgotPassword, refreshAccessToken }
 

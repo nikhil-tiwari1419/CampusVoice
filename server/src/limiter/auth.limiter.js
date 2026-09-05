@@ -1,28 +1,28 @@
 import ratelimiter from 'express-rate-limit'
 
 
-const loginLimiter = ratelimiter({ // 15 min
-    windowMs: 15 * 60 * 1000,
+const loginLimiter = ratelimiter({ // 5 min
+    windowMs: 5 * 60 * 1000,
     max: 5,
-    message: { message: "To many login request attemps! Try after 15 minutes" }
+    message: { message: "To many login request attemps! Try after 5 minutes" }
 });
 
-const registerLimiter = ratelimiter({ //30 min
-    windowMs: 30 * 60 * 1000,
-    max: 18,
-    message: { message: "Too many account created! Try after 30 min" }
-});
-
-const otpLimiter = ratelimiter({ // 10 min
+const registerLimiter = ratelimiter({ //10 min
     windowMs: 10 * 60 * 1000,
+    max: 18,
+    message: { message: "Too many account created! Try after 10 min" }
+});
+
+const otpLimiter = ratelimiter({ // 5 min
+    windowMs: 5 * 60 * 1000,
     max: 3,
-    message: { message: "Too many OTP attempts! Try after 10 minutes" }
+    message: { message: "Too many OTP attempts! Try after 5 minutes" }
 });
 
 const forgotLimiter = ratelimiter({ // 30 min 
-    windowMs: 30 * 60 * 1000,
+    windowMs: 5 * 60 * 1000,
     max: 3,
-    message: { message: "Too Many requests! Try after 30 minutes " }
+    message: { message: "Too Many requests! Try after 5 minutes " }
 });
 
 export default { loginLimiter, registerLimiter, otpLimiter, forgotLimiter }

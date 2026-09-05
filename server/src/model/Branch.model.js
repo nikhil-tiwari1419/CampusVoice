@@ -1,4 +1,4 @@
-import mongoose from mongoose
+import mongoose from 'mongoose'
 
 const branchSchema = new mongoose.Schema({
     name: {
@@ -16,4 +16,4 @@ const branchSchema = new mongoose.Schema({
 
 branchSchema.index({ name: 1, program: 1 }, { unique: true });
 
-module.exports = mongoose.model('Branch', branchSchema)
+export default mongoose.model('Branch', branchSchema)

@@ -33,9 +33,32 @@ const userSchema = new mongoose.Schema({
             return this.provider === 'local';
         },
         select: false
+    },
+
+    // this is i have added here flag 
+    isProfileComplete: {
+        type: Boolean,
+        default: false
+    },
+    batch: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Batch",
+    },
+    sem: {
+        type: String,
+
+    },
+    phone: {
+        type: Number,
+
     }
 
 }, { timestamps: true });
+
+userSchema.index(
+    { createdAt: 1 },
+    { expireAfterSeconds: 600, partialFilterExpression: { isVerified: false } }
+)
 
 const userModel = mongoose.model('user', userSchema)
 
