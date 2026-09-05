@@ -6,17 +6,17 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const navLinkClass = ({ isActive }) =>
-    `px-3 py-2 rounded-lg text-sm font-medium transition ${
+    `px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
       isActive
-        ? 'text-blue-600 bg-blue-50'
-        : 'text-gray-600 hover:text-blue-600 hover:bg-gray-100'
+        ? 'text-teal-400 bg-teal-500/10 border border-teal-500/20 shadow-sm shadow-teal-500/5'
+        : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 border border-transparent'
     }`
 
   const mobileNavLinkClass = ({ isActive }) =>
-    `block px-4 py-3 rounded-lg text-base font-medium transition ${
+    `block px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
       isActive
-        ? 'text-blue-600 bg-blue-50'
-        : 'text-gray-600 hover:text-blue-600 hover:bg-gray-100'
+        ? 'text-teal-400 bg-teal-500/10 border border-teal-500/20'
+        : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
     }`
 
   const navLinks = [
@@ -27,18 +27,20 @@ function Navbar() {
   ]
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="bg-[#080C14]/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-50 select-none font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <GraduationCap className="w-7 h-7 text-gray-800" />
-          <span className="text-xl font-bold text-gray-800">
-            Campus<span className="text-blue-600">Voice</span>
+        <NavLink to="/" className="flex items-center gap-2.5 group cursor-pointer">
+          <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 group-hover:scale-105 transition-transform">
+            <GraduationCap className="w-5 h-5" />
+          </div>
+          <span className="text-lg font-bold text-slate-100 tracking-tight">
+            Campus<span className="text-teal-400">Voice</span>
           </span>
-        </div>
+        </NavLink>
 
         {/* Desktop nav links */}
-        <ul className="hidden md:flex gap-2">
+        <ul className="hidden md:flex items-center gap-1.5">
           {navLinks.map(({ to, label, end }) => (
             <li key={to}>
               <NavLink to={to} className={navLinkClass} end={end}>
@@ -50,21 +52,22 @@ function Navbar() {
 
         {/* Hamburger button (mobile only) */}
         <button
+          type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+          className="md:hidden p-2 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 border border-slate-800/80 transition-colors cursor-pointer"
           aria-label="Toggle menu"
         >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {/* Mobile dropdown menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out border-b border-slate-800/80 bg-[#0F172A]/95 backdrop-blur-2xl ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <ul className="px-4 pb-4 space-y-1 border-t border-gray-100 pt-2">
+        <ul className="px-4 py-3 space-y-1">
           {navLinks.map(({ to, label, end }) => (
             <li key={to}>
               <NavLink
