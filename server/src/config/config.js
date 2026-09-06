@@ -34,6 +34,10 @@ if (!process.env.NODE_ENV) {
   console.error("client usrl is not correct or not define")
   process.exit(1);
 }
+if(!process.env.BREVO_SENDER_EMAIL) {
+  console.error(" sdmin email is not provided");
+  process.exit(1)
+}
 const config = {
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -43,6 +47,7 @@ const config = {
   JWT_SECRET: process.env.JWT_SECRET,
   CLIENT_URL: process.env.CLIENT_URL,
   NODE_ENV: process.env.NODE_ENV,
+  BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL,
 }
 
 export default config;

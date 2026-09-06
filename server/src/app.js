@@ -5,6 +5,7 @@ import cors from "cors";
 import googleOauthRoutes from "./routes/oauth.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import profileUser from './routes/profile.routes.js'
+import sendComplain from './routes/send.routes.js'
 import cookieParser from 'cookie-parser'
 import config from '../src/config/config.js'
 const app = express();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use("/api/oauth", googleOauthRoutes);
 app.use('/api/auth', authRoutes)
 app.use('/api/user', profileUser)
+app.use('/api/send', sendComplain)
 
 app.get("/", (req, res) => {
   res.send("Hello from server API working");

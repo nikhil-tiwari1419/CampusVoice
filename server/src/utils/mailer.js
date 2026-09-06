@@ -88,45 +88,43 @@ export async function sendPasswordResetEmail(email, username) {
         `)
     });
 }
-
-//complain box email  To admin
-export async function sendComplainEmailNotification(complain) {
+// complain box email — To admin
+export async function sendComplainEmailNotification(populateComplain) {
     try {
+        const branchName = populateComplain.batch?.branch?.name || 'N/A';
+        const programName = populateComplain.batch?.program?.name || 'N/A';
+        const year = populateComplain.batch?.year;
+
         await sendEmail({
             to: config.BREVO_SENDER_EMAIL,
-            subject: `Complain from ${complain.branch} Branch`,
+            subject: `Complain from ${programName} ${branchName} Branch`,
             html: emailTemplate(`
-                <h2> New Complaibn Arrive form ${complain.batch}</h2>
-                <p><strong>Student name </strong> = ${complain.user}</p>
-                <p> <strong>Student email </strong>= ${complain.email}</p>
-                <p><strong>Complain </strong>=${complain.message} </p>
-                <p>${complain.message} </p>
-                `)
-        })
-
+                <h2>New Complaint Arrived from ${programName} - Year ${year}</h2>
+                <p><strong>Student name</strong> = ${populateComplain.user.username}</p>
+                <p><strong>Student email</strong> = ${populateComplain.user.email}</p>
+                <p><strong>Complaint</strong> = ${populateComplain.message}</p>
+            `)
+        });
     } catch (error) {
-        console.log("sendComplainEmailNotification having error", message.err);
+        console.error("sendComplainEmailNotification error:", error.message);
         throw error;
     }
 }
 
-// complain notificatiion to student
-export async function sendComplainConfirmation(complain) {
+// complain notification to student
+export async function sendComplainConfirmation(populateComplain) {
     try {
         await sendEmail({
-            to: complain.email,
-            subject: `We recived your message = CampusVoice`,
+            to: populateComplain.user.email,
+            subject: `We received your message - CampusVoice`,
             html: emailTemplate(`
-                <h2>Submitted new complain regarding ${complain.subject}</h2>
-                <p>Thanks for reaching out${complain.username} </p>
-                <p></p>
-                <p></p>
-                `)
-        })
-
+                <h2>Submitted new complaint regarding ${populateComplain.subject}</h2>
+                <p>Thanks for reaching out, ${populateComplain.user.username}!</p>
+                <p>We've received your complaint and will look into it soon.</p>
+            `)
+        });
     } catch (error) {
-        console.error("send complain confernametion having error", message.error);
+        console.error("sendComplainConfirmation error:", error.message);
         throw error;
     }
 }
-

@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 
 const complaintSchema = new mongoose.Schema({
-    username: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
-    batches: {
+    batch: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Batch',
         required: true
