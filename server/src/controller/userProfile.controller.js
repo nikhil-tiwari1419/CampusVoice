@@ -18,14 +18,23 @@ export async function UserProfile(req, res) {
         });
 
         if (!batch) {
+            console.error(error)
             return res.status(404).json({ success: false, message: "Invalid batch combination" });
+        }
+        const yearNum = Number(year)
+        const validSem = [(yearNum * 2 - 1), yearNum * 2]
+
+        if (!validSem.includes(Number(sem))) {
+            return res.status(400).json({
+                success: false,
+                message: `Invalid sem for year ${year} . Valid option: ${validSem.join(' or ')}`
+            })
         }
 
         const updateUser = await userModel.findByIdAndUpdate(req.user.id,
             {
-
                 batch: batch._id,
-                sem,
+                sem:Number(sem),
                 phone,
                 isProfileComplete: true
             },
@@ -62,9 +71,9 @@ export async function getProfile(req, res) {
 
         return res.status(200).json({ success: true, message: "user found", data: student });
     } catch (error) {
-        console.error("getprofile error: ",message.error)
+        console.error("getprofile error: ", error)
         res.status(500).json({
-            success:false,
+            success: false,
             message: "Something went wrong in getProfile",
         })
     }

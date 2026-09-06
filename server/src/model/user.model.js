@@ -45,7 +45,9 @@ const userSchema = new mongoose.Schema({
         ref: "Batch",
     },
     sem: {
-        type: String,
+        type: Number,
+        min:1,
+        max:8
 
     },
     phone: {
