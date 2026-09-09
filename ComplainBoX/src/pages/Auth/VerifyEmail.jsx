@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Mail, Key, Check, ShieldAlert, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
-import { useAuth } from "../context/auth";
+import { useAuth } from "../../context/auth";
 
 export default function VerifyEmail() {
   const { verifyEmail } = useAuth();

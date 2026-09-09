@@ -4,20 +4,19 @@ import { Toaster } from 'react-hot-toast'
 import { AlertTriangle, ArrowLeft } from 'lucide-react'
 
 import Pageloader from './components/Pageloader'
-import MainLayout from './components/Layout/MainLayout'
+import MainLayout from './Layout/MainLayout'
 
 // 1. Import your AuthProvider and useAuth hook
 import { AuthProvider, useAuth } from './context/auth'
 
 // Lazy-loaded pages 
-const UserHome = lazy(() => import('./pages/UserHome'))
-const AdminHome = lazy(() => import('./pages/AdminHome'))
-const Login = lazy(() => import('./pages/Login'))
-const ContactUs = lazy(() => import('./pages/ContactUs'))
-const About = lazy(() => import('./pages/AboutUs'))
-const Grivenceform = lazy(() => import('./pages/Grivenceform'))
-const LandingPage = lazy(() => import('./pages/LandingPage'))
-const VerifyEmail = lazy(() => import('./pages/VerifyEmail'))
+const UserHome = lazy(() => import('./pages/UserProfile/UserHome'))
+const AdminHome = lazy(() => import('./pages/AdminProfile/AdminHome'))
+const Login = lazy(() => import('./pages/Auth/Login'))
+const ForgootPass = lazy(()=> import('./pages/Auth/ForgootPassword'))
+const Grivenceform = lazy(() => import('./pages/UserProfile/Grivenceform'))
+const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'))
+const VerifyEmail = lazy(() => import('./pages/Auth/VerifyEmail'))
 
 const withSuspense = (Component) => (
   <Suspense fallback={<Pageloader />}>
@@ -89,10 +88,10 @@ const router = createBrowserRouter([
       },
 
       // --- Public Routes ---
-      { path: 'about', element: withSuspense(About) },
-      { path: 'contact', element: withSuspense(ContactUs) },
+      { path: 'landingPage', element: withSuspense(LandingPage) },
       { path: 'login', element: withSuspense(Login) },
       { path: 'verify-email', element: withSuspense(VerifyEmail) },
+      { path: 'forgootpass', element: withSuspense(ForgootPass) },
       
       // Catch-all route
       { path: '*', element: withSuspense(LandingPage) }, 

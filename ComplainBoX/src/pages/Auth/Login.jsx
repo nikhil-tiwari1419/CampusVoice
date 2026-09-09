@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, Check, X, AtSign, Loader2, AlertCircle } from "lucide-react";
-import { useAuth } from "../context/auth";
+import { useAuth } from "../../context/auth";
 
 function GoogleMark({ className = "w-4 h-4" }) {
   return (

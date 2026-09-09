@@ -1,7 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Megaphone, Activity, ShieldCheck, ArrowRight, Sparkles, Clock, CheckCircle2, Building2 } from 'lucide-react'
-import FAQ from '../components/FAQ'
+import FAQ from '../../components/FAQ'
+import ContactUs from '../../components/ContactUs'
+import AboutUs from '../../components/AboutUs'
 
 function LandingPage() {
   return (
@@ -123,6 +125,8 @@ function LandingPage() {
           </div>
         </section>
        <FAQ/>
+       <ContactUs/>
+       <AboutUs/>
       </main>
 
 
