@@ -103,7 +103,7 @@ function AdminHome() {
   })
 
   return (
-    <div className="relative min-h-screen w-full bg-[#080C14] py-10 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden">
+    <div className="relative min-h-screen w-full bg-white dark:bg-[#080C14] py-10 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-0 right-1/4 w-[600px] h-[350px] bg-teal-500/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-[450px] h-[300px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -120,7 +120,7 @@ function AdminHome() {
 
       <div className="relative max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800/80 pb-6">
+        <div className="flex items-center justify-between flex-wrap gap-4 border-b border-gray-300 dark:border-slate-800/80 pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="relative flex h-2 w-2">
@@ -139,9 +139,9 @@ function AdminHome() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 bg-[#0F172A]/80 border border-slate-800/80 px-4 py-2 rounded-xl backdrop-blur-md shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-teal-400" />
-            <span className="text-xs font-semibold text-slate-200">Authorized Officer</span>
+          <div className="flex items-center gap-2.5 bg-white dark:bg-[#0F172A]/80 border border-gray-200 dark:border-slate-800/80 px-4 py-2 rounded-xl backdrop-blur-md shadow-sm">
+            <ShieldCheck className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+            <span className="text-xs font-semibold text-gray-900 dark:text-slate-200">Authorized Officer</span>
           </div>
         </div>
 
@@ -150,21 +150,21 @@ function AdminHome() {
           {stats.map(({ label, value, icon: Icon, color }) => (
             <div
               key={label}
-              className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl p-5 shadow-lg shadow-black/40 backdrop-blur-xl hover:border-slate-700/80 transition-all"
+              className="bg-white dark:bg-[#0F172A]/80 border border-gray-200 dark:border-slate-800/80 rounded-2xl p-5 shadow-lg shadow-gray-900/5 dark:shadow-black/40 backdrop-blur-xl hover:border-gray-300 dark:hover:border-slate-700/80 transition-all"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorMap[color]}`}>
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight">{value}</p>
-              <p className="text-xs font-medium text-slate-400 mt-1">{label}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-slate-100 tracking-tight">{value}</p>
+              <p className="text-xs font-medium text-gray-600 dark:text-slate-400 mt-1">{label}</p>
             </div>
           ))}
         </div>
 
         {/* Filters & Search Toolbar */}
-        <div className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl p-4 shadow-lg shadow-black/40 backdrop-blur-xl flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+        <div className="bg-white dark:bg-[#0F172A]/80 border border-gray-200 dark:border-slate-800/80 rounded-2xl p-4 shadow-lg shadow-gray-900/5 dark:shadow-black/40 backdrop-blur-xl flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 text-xs text-slate-500 mr-1 font-medium">
               <Filter className="w-3.5 h-3.5" />
@@ -199,11 +199,11 @@ function AdminHome() {
         </div>
 
         {/* Complaints Table Container */}
-        <div className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl shadow-2xl shadow-black/60 backdrop-blur-xl overflow-hidden">
+        <div className="bg-white dark:bg-[#0F172A]/80 border border-gray-200 dark:border-slate-800/80 rounded-2xl shadow-2xl shadow-gray-900/10 dark:shadow-black/60 backdrop-blur-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm border-collapse">
               <thead>
-                <tr className="bg-slate-900/60 border-b border-slate-800 text-slate-400 text-[11px] font-semibold uppercase tracking-wider">
+                <tr className="bg-gray-100 dark:bg-slate-900/60 border-b border-gray-300 dark:border-slate-800 text-gray-700 dark:text-slate-400 text-[11px] font-semibold uppercase tracking-wider">
                   <th className="px-6 py-4">Ticket ID</th>
                   <th className="px-6 py-4">Subject</th>
                   <th className="px-6 py-4">Student</th>
@@ -214,22 +214,22 @@ function AdminHome() {
                   <th className="px-6 py-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+              <tbody className="divide-y divide-gray-200 dark:divide-slate-800/60 text-gray-700 dark:text-slate-300">
                 {filteredComplaints.length > 0 ? (
                   filteredComplaints.map((c) => (
                     <tr
                       key={c.id}
-                      className="hover:bg-slate-800/30 transition-colors group"
+                      className="hover:bg-gray-100 dark:hover:bg-slate-800/30 transition-colors group"
                     >
-                      <td className="px-6 py-4 font-mono text-xs text-slate-400 font-medium">
+                      <td className="px-6 py-4 font-mono text-xs text-gray-600 dark:text-slate-400 font-medium">
                         {c.id}
                       </td>
-                      <td className="px-6 py-4 font-medium text-slate-100 max-w-xs truncate">
+                      <td className="px-6 py-4 font-medium text-gray-900 dark:text-slate-100 max-w-xs truncate">
                         {c.subject}
                       </td>
-                      <td className="px-6 py-4 text-slate-300">{c.student}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">
-                        <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700/60">
+                      <td className="px-6 py-4 text-gray-700 dark:text-slate-300">{c.student}</td>
+                      <td className="px-6 py-4 text-gray-600 dark:text-slate-400 text-xs">
+                        <span className="px-2.5 py-1 rounded-md bg-gray-200 dark:bg-slate-800/80 border border-gray-300 dark:border-slate-700/60">
                           {c.department}
                         </span>
                       </td>
@@ -243,11 +243,11 @@ function AdminHome() {
                           {c.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-400 text-xs font-mono">{c.date}</td>
+                      <td className="px-6 py-4 text-gray-600 dark:text-slate-400 text-xs font-mono">{c.date}</td>
                       <td className="px-6 py-4 text-right">
                         <button
                           type="button"
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-teal-400/10 cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-400/10 cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>Review</span>
@@ -259,9 +259,9 @@ function AdminHome() {
                   <tr>
                     <td colSpan={8} className="px-6 py-14 text-center">
                       <div className="flex flex-col items-center justify-center gap-2">
-                        <Inbox className="w-8 h-8 text-slate-600 mb-1" />
-                        <p className="text-sm font-medium text-slate-300">No complaints found</p>
-                        <p className="text-xs text-slate-500 max-w-sm">
+                        <Inbox className="w-8 h-8 text-gray-400 dark:text-slate-600 mb-1" />
+                        <p className="text-sm font-medium text-gray-700 dark:text-slate-300">No complaints found</p>
+                        <p className="text-xs text-gray-600 dark:text-slate-500 max-w-sm">
                           No reports match your current filter or search criteria. Try adjusting your query.
                         </p>
                       </div>
