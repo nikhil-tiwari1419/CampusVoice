@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index(
     { createdAt: 1 },
-    { expireAfterSeconds: 600, partialFilterExpression: { isVerified: false } }
+    { expireAfterSeconds: 300, partialFilterExpression: { isVerified: false } }
 )
 
 const userModel = mongoose.model('user', userSchema)
