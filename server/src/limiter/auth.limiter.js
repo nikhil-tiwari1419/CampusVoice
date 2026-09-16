@@ -25,5 +25,6 @@ const forgotLimiter = ratelimiter({ // 30 min
     message: { message: "Too Many requests! Try after 5 minutes " }
 });
 
+
 export default { loginLimiter, registerLimiter, otpLimiter, forgotLimiter }
 

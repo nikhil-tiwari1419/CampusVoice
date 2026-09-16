@@ -9,6 +9,7 @@ import sendComplain from './routes/send.routes.js'
 import programRoutes from './routes/program.routes.js'
 import cookieParser from 'cookie-parser'
 import config from '../src/config/config.js'
+import adminRoutes from './routes/Superadmin.route.js'
 const app = express();
 
 app.use(cors({ origin: config.CLIENT_URL, credentials: true }));
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', profileUser)
 app.use('/api/send', sendComplain)
 app.use('/api/user', programRoutes)
+app.use('/api/admin',adminRoutes)
 
 app.get("/", (_req, res) => {
   res.send("Hello from server API working");

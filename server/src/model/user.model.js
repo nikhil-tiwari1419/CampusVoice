@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
+        enum: ['user', 'admin', 'super_admin'],
         default: 'user'
     },
     isVerified: {
@@ -48,11 +48,9 @@ const userSchema = new mongoose.Schema({
         type: Number,
         min:1,
         max:8
-
     },
     phone: {
         type: Number,
-
     }
 
 }, { timestamps: true });

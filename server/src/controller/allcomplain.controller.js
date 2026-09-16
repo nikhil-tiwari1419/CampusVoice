@@ -4,34 +4,49 @@ import BatchModel from "../model/Batch.model.js";
 import ProgramModel from "../model/Program.model.js";
 import complainBox from "../model/complainBox.model.js"
 
-export async function getAllCompain(req, res) {
-    try {
-        const complain = await complainBox.find()
-            .populate('user', 'username email')
-            .populate({
-                path: 'batch',
-                populate: [{ path: 'program' }, { path: 'branch' }]
-            });
+export async function getMyBranchAllCompain(req, res) {
+   try {
+      const userId = req.user.id; // ye token verify ho ke ayega middelware se 
 
-        if (complain.length === 0) {
-            return res.status(404).json({
-                success: false,
-                messsage: "complain dose not exist"
-            });
-        }
+      const student = await userModel.findById(userId).populate({
+         path: 'batch',
+         populate: { path: 'batch' }
+      });
 
-        return res.status(200).json({
+      if (!student || !student.batch || !student.batch.branch) {
+         return res.status(404).json({
             success: true,
-            messsage: "Complain found",
-            data: complain
-        });
+            message: "Branch information not found for this student"
+         });
+      }
 
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({
-            success: true,
-            messsage: "getAllcomplain controller error"
-        })
-    }
+      const branchId = student.batch.branch._id;
+
+      // Find all batches under this branch 
+      const batchesInBranch = await BatchModel.find({ branch: branchId }).select('_id');
+      const batchIds = batchesInBranch.map(b => b._id);
+
+      const complaints = await complainBox.find({ batch: { $in: batchIds } })
+         .populate('user', 'username email')
+         .populate({
+            path: 'batch',
+            populate: [{ path: 'program' }, { path: 'branch' }]
+         })
+         .sort({ createdAt: -1 });
+
+      return req.status(200).json({
+         success: true,
+         message: complaints.length === 0 ? "No complaints found for thid batch" : "Complaints found",
+         data: complaints
+      });
+
+   } catch (error) {
+      console.error("getComplainsById controller error", error.message);
+      res.status(500).json({
+         success: false,
+         message: "Error fetching complaints"
+      });
+
+   }
 }
 

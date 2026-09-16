@@ -1,10 +1,9 @@
-import JsonWebTokenError, { decode } from "jsonwebtoken";
 import bcrypt from "bcryptjs"
 import blacklistToken from '../model/blacklistToken.model.js'
 import refreshTokenModel from "../model/refreshToken.model.js";
 import userModel from "../model/user.model.js";
 import otpModel from "../model/otp.model.js";
-import { sendWelcomeEmail, sendOTPEmail, sendPasswordResetEmail } from "../utils/mailer.js";
+import { sendOTPEmail, sendPasswordResetEmail } from "../utils/mailer.js";
 import { generateAccesToken, generateRefreshToken } from "../utils/token.js";
 
 
@@ -14,8 +13,8 @@ function generateOTP() {
 }
 const isProduction = process.env.NODE_ENV === 'production';
 
-//resigestrUser
-async function registerUser(req, res) {
+//resigestrUser 
+export async function registerUser(req, res) {
     try {
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
@@ -71,7 +70,7 @@ async function registerUser(req, res) {
     } catch (error) {
 
         if (error.code === 11000) {
-            return res.status(404).json({
+            return res.status(409).json({
                 success: false,
                 message: "Email already exist"
             });
@@ -85,7 +84,7 @@ async function registerUser(req, res) {
 }
 
 // verify function
-async function verifyEmail(req, res) {
+export async function verifyEmail(req, res) {
     try {
         const { email, otp } = req.body;
 
@@ -138,7 +137,7 @@ async function verifyEmail(req, res) {
 }
 
 // login function
-async function login(req, res) {
+export async function login(req, res) {
 
     try {
         const { email, password } = req.body;
@@ -154,7 +153,7 @@ async function login(req, res) {
 
         if (!user) {
             return res.status(401).json({
-                message: " Inavlid creadintial , user not found with this username or email"
+                message: "Inavlid creadintial , user not found with this username or email"
             });
         }
 
@@ -176,6 +175,7 @@ async function login(req, res) {
             sendOTPEmail(user.email, otp, "verify").catch(err => console.error(err));
 
             return res.status(403).json({
+                success:false,
                 message: "Email not verified. New OTP sent to your emil."
             });
         }
@@ -208,6 +208,7 @@ async function login(req, res) {
 
 
         return res.status(200).json({
+            success:true,
             message: "Login successful!",
             user: {
                 id: user._id,
@@ -227,7 +228,7 @@ async function login(req, res) {
 }
 
 //Refresh token - new token [access token generate]
-async function refreshAccessToken(req, res) {
+export async function refreshAccessToken(req, res) {
     try {
         const { refreshToken } = req.cookies;
 
@@ -297,7 +298,7 @@ async function refreshAccessToken(req, res) {
 }
 
 //logout
-async function logOut(req, res) {
+export async function logOut(req, res) {
     try {
         const accesstoken = req.cookies?.accesstoken || req.headers.authorization?.split(" ")[1];
         const refreshToken = req.cookies?.refreshToken;
@@ -346,7 +347,7 @@ async function logOut(req, res) {
 }
 
 //forgot password 
-async function forgotPassword(req, res) {
+export async function forgotPassword(req, res) {
     try {
         const { email } = req.body;
         const normalizedEmail = email?.trim().toLowerCase();
@@ -379,7 +380,7 @@ async function forgotPassword(req, res) {
 }
 
 // RESET PASSWORD
-async function resetPassword(req, res) {
+export async function resetPassword(req, res) {
     try {
         const { email, otp, newPassword } = req.body;
         const normalizedEmail = email?.trim().toLowerCase();
@@ -425,7 +426,7 @@ async function resetPassword(req, res) {
 }
 
 //IsAuth
-async function IsAuth(req, res) {
+export async function IsAuth(req, res) {
     try {
         const user = await userModel.findById(req.user.id).select('-password');
         console.log(req.user.id);
@@ -450,5 +451,5 @@ async function IsAuth(req, res) {
     }
 }
 
-export default { registerUser, verifyEmail, login, logOut, IsAuth, resetPassword, forgotPassword, refreshAccessToken }
+// export default { registerUser, verifyEmail, login, logOut, IsAuth, resetPassword, forgotPassword, refreshAccessToken }
 
