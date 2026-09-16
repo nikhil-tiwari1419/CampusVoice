@@ -19,8 +19,8 @@ const otpSchema = new mongoose.Schema({
         password:{ type: String }
     },
     expiresAt: {
-        type: Date, default: () => new Date(Date.now() + 10 * 60 * 1000)
-    }// 10 min
+        type: Date, default: () => new Date(Date.now() + 5 * 60 * 1000)
+    }// 5 min
 }, {timestamps: true });
 
 // Auto delete expired OTPs
