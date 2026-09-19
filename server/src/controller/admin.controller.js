@@ -3,6 +3,8 @@ import Branch from '../model/Branch.model.js'
 import Batch from '../model/Batch.model.js'
 import userModel from '../model/user.model.js'
 import complaintModel from '../model/complainBox.model.js'
+import BatchModel from '../model/Batch.model.js'
+
 
 
 //  Add a new branch to an existing program -- auto grnerate its batch 
@@ -34,8 +36,8 @@ export async function addBranch(req, res) {
 
 export async function getAllStudent(req, res) {
     try {
-        const AllStudent = await userModel.find()
-            .populate('user', 'username email ')
+        const AllStudent = await userModel.find({role:'student'})
+            .select('-password')
             .populate({
                 path: 'batch',
                 populate: [{ path: 'program' }, { path: 'branch' }]
@@ -64,15 +66,38 @@ export async function getAllStudent(req, res) {
 }
 
 export async function getallComplain(req, res) {
+    
     try {
-        const complain = await complaintModel.find()
-            .populate('user', 'username email')
-            .populate({
-                path: 'batch',
-                populate: [{ path: 'program' }, { path: 'branch' }]
-            });
+        const admin = await userModel.findById(req.user.id);
+        let batchIds;
+        if (admin.managedBranch) {
 
-        if (complain.length === 0) {
+            //Branch-level admin (e.g BSc -CS branch admin)
+
+            const batches = await BatchModel.find({
+                branch: admin.managedBranch
+            }).select('_id');
+            batchIds = batches.map(b => b._id);
+        } else if (admin.managedProgram) {
+
+            // program-level admin (e.g BCA admin)
+
+            const batches = await BatchModel.find({ program: admin.managedProgram }).select('_id');
+            batchIds = batches.map(b => b._id);
+
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: "No program or branch assigned to this admin"
+            });
+        }
+
+        const complaints = await complaintModel.find({ batch: { $in: batchIds } })
+            .populate('student', 'username email')
+            .populate({ path: 'batch', populate: ['program', 'branch'] })
+            .sort({ createdAt: -1 });
+
+        if (complaints.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "complain dose not exist"
@@ -80,8 +105,8 @@ export async function getallComplain(req, res) {
         }
         return res.status(200).json({
             success: true,
-            message: complain.length === 0 ? "No complaints found" : "Complaints found",
-            data: complain
+            message: complaints.length === 0 ? "No complaints found" : "Complaints found",
+            data: complaints
         });
 
     } catch (error) {

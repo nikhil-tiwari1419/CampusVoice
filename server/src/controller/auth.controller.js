@@ -5,7 +5,7 @@ import userModel from "../model/user.model.js";
 import otpModel from "../model/otp.model.js";
 import { sendOTPEmail, sendPasswordResetEmail } from "../utils/mailer.js";
 import { generateAccesToken, generateRefreshToken } from "../utils/token.js";
-
+import { performLogout } from "../utils/logoutHelper.js";
 
 // generate otp 6 digit OTP 
 function generateOTP() {
@@ -42,7 +42,7 @@ export async function registerUser(req, res) {
             username: normalizedUsername,
             email: normalizedEmail,
             password: hash,
-            role: 'user',
+            role: 'student',
             isVerified: false
         });
 
@@ -175,7 +175,7 @@ export async function login(req, res) {
             sendOTPEmail(user.email, otp, "verify").catch(err => console.error(err));
 
             return res.status(403).json({
-                success:false,
+                success: false,
                 message: "Email not verified. New OTP sent to your emil."
             });
         }
@@ -208,7 +208,7 @@ export async function login(req, res) {
 
 
         return res.status(200).json({
-            success:true,
+            success: true,
             message: "Login successful!",
             user: {
                 id: user._id,
@@ -300,48 +300,12 @@ export async function refreshAccessToken(req, res) {
 //logout
 export async function logOut(req, res) {
     try {
-        const accesstoken = req.cookies?.accesstoken || req.headers.authorization?.split(" ")[1];
-        const refreshToken = req.cookies?.refreshToken;
-
-        if (!accesstoken) {
-            return res.status(400).json({
-                message: "No token found"
-            });
-        }
-
-        //BlacklistToken
-        await blacklistToken.findOneAndUpdate(
-            { accesstoken },
-            { accesstoken },
-            { upsert: true, returnDocument: 'after' },
-        );
-
-        //Refresh token DB se delete kkaro
-        if (refreshToken) {
-            await refreshTokenModel.deleteOne({ accesstoken: refreshToken });
-        }
-
-        //dono cookies clear 
-        res.clearCookie('accesstoken', {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-        });
-
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-        })
-
-        res.status(200).json({
-            message: 'User logout successfully'
-        });
-
+        return await performLogout(req, res);
     } catch (error) {
-        console.log(error)
+        console.log("Logout error:", error);
         res.status(500).json({
-            message: 'logout failed', error: error.message
+            success: false,
+            message: 'logout failed'
         });
     }
 }

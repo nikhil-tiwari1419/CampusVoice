@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '../config/config.js';
+import userModel from '../model/user.model.js';
 
 //  Base Template 
 function emailTemplate(bodyHTML) {
@@ -91,12 +92,23 @@ export async function sendPasswordResetEmail(email, username) {
 // complain box email — To admin
 export async function sendComplainEmailNotification(populateComplain) {
     try {
-        const branchName = populateComplain.batch?.branch?.name || 'N/A';
-        const programName = populateComplain.batch?.program?.name || 'N/A';
+        const branchId = populateComplain.batch?.branch?._id;
+        const programId = populateComplain.batch?.program?._id;
+        const branchName = populateComplain.batch?.branch?.name|| 'N/A';
+        const programName = populateComplain.batch?.program?.name|| 'N/A';
         const year = populateComplain.batch?.year;
 
+        let responsibleAdmin = null;
+
+        if(branchId) {
+            responsibleAdmin = await userModel.findOne({role:"admin", managedBranch:branchId }).select("email username");
+        } else if(programId){
+            responsibleAdmin = await userModel.findOne({ role:"admin", managedProgram:programId}).select('email username');
+        }
+
+        const adminEmail = responsibleAdmin?.email;
         await sendEmail({
-            to: config.BREVO_SENDER_EMAIL,
+            to: adminEmail,
             subject: `Complain from ${programName} ${branchName} Branch`,
             html: emailTemplate(`
                 <h2>New Complaint Arrived from ${programName} - Year ${year}</h2>
@@ -106,6 +118,7 @@ export async function sendComplainEmailNotification(populateComplain) {
             `)
         });
     } catch (error) {
+        console.log("nahi run hua")
         console.error("sendComplainEmailNotification error:", error.message);
         throw error;
     }
@@ -124,6 +137,7 @@ export async function sendComplainConfirmation(populateComplain) {
             `)
         });
     } catch (error) {
+        console.log("nahi run hua")
         console.error("sendComplainConfirmation error:", error.message);
         throw error;
     }

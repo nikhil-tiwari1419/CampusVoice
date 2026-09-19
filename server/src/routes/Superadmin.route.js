@@ -9,6 +9,6 @@ router.post('/create-admin', verifyToken, authorize("super_admin"),createAdminVa
 router.get('/alladmin', verifyToken, authorize("super_admin"),getAllAdmin)
 router.delete('/admin/:id', verifyToken, authorize("super_admin"),removeAdmin)
 
-router.get('/all-sttudent',verifyToken,authorize("admin"),)
+router.get('/all-sttudent',verifyToken,authorize("super_admin"),)
 
 export default router;

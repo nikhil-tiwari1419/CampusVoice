@@ -5,12 +5,12 @@ import { authorize, verifyToken } from '../middleware/auth.middelware.js'
 const router = express.Router()
 
 // Get all programs
-router.get('/programs', getAllPrograms, verifyToken, authorize('admin'))
+router.get('/programs', getAllPrograms, verifyToken, authorize('admin', 'student'))
 
 // Get branches by program ID
-router.get('/branches/:programId', getBranchesByProgram)
+router.get('/branches/:programId', getBranchesByProgram, verifyToken, authorize('admin', 'student'))
 
 // Get batches by program, branch, and year
-router.get('/batches', getBatchesByProgramBranch)
+router.get('/batches', getBatchesByProgramBranch, verifyToken, authorize('admin', 'student'))
 
 export default router

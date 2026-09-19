@@ -14,32 +14,35 @@ export async function Writecomplain(req, res) {
             });
         }
 
-        const student = await userModel.findById(req.user.id);
-        if (!student) {
+        const user = await userModel.findById(req.user.id);
+        if (!user) {
             return res.status(404).json({
                 success: false,
-                message: "user not foudn"
-            })
+                message: "student not found"
+            });
         }
-        if(!student.batch){
-            return res.status(404).json({
-                success:false,
-                message:"Please complet your profile"
-            })
+        
+        if (!user.isProfileComplete) {
+            return res.status(403).json({
+                success: false,
+                message: "Please complete your profile before submitting a complaint"
+            });
         }
         const complain = await complaintModel.create({
             user: req.user.id,
-            batch: student.batch,
+            batch: user.batch,
             subject: subject,
             message,
-
-        })
+        });
 
         const populateComplain = await complaintModel.findById(complain._id)
             .populate('user', 'username email')
             .populate({
                 path: 'batch',
-                populate: [{ path: 'program' }, { path: 'branch' }]
+                populate: [
+                    { path: 'program' },
+                    { path: 'branch' }
+                ]
             });
 
         try {
@@ -53,9 +56,11 @@ export async function Writecomplain(req, res) {
             success: true,
             message: "Notification send successFully ",
             data: populateComplain
-        })
+        });
+
     } catch (error) {
         console.error("Error occurring in complain box controller", error.message);
         return res.status(500).json({ success: false, message: "Something went wrong" });
     }
-} 
+}
+

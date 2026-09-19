@@ -13,23 +13,33 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                let existingUser = await userModel.findOne({
-                    email: profile.emails[0].value,
-                });
-
+                const email = profile.emails[0].value;
+                let existingUser = await userModel.findOne({ email });
+                //first step ye hai -> if user hi exist nahi karta 
                 if (!existingUser) {
-                    existingUser = await userModel.create({
-                        username: profile.displayName,
-                        email: profile.emails[0].value,
+                    const generatedUsername = profile.displayName.replace(/\s+/g, '_').toLowerCase();
+                    const newUser = await userModel.create({
+                        username: generatedUsername,
+                        email,
                         isVerified: true,
                         provider: 'google',
+                        role: 'student'
                     });
-                }
 
+                    return done(null, newUser);
+                }
+                // user exist karta hai
+                if (existingUser.provider === 'local') {
+                    return done(null, false, {
+                        message: "This email is already  registered with a password. Please login using email and password."
+                    })
+                }
+                // already a google user - login allow karo
                 return done(null, existingUser);
-            } catch (err) {
-                console.log("Error creating user via Google OAuth:", err);
-                return done(err, null);
+
+            } catch (error) {
+                console.log("Error creating user via Google OAuth");
+                return done(error, null);
             }
         }
     )

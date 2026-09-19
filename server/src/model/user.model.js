@@ -15,8 +15,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['user', 'admin', 'super_admin'],
-        default: 'user'
+        enum: ['student', 'admin', 'super_admin'],
+        default: 'student'
     },
     isVerified: {
         type: Boolean,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
         select: false
     },
 
-    // this is i have added here flag 
+    // student profile
     isProfileComplete: {
         type: Boolean,
         default: false
@@ -51,6 +51,23 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
+    },
+
+    //admin profile
+    managedProgram: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref : "Program",
+        default: null
+    },
+    managedBranch:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Branch",
+        default: null
+    },
+    createdAt:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref :"student",
+        default: null
     }
 
 }, { timestamps: true });
@@ -61,6 +78,5 @@ userSchema.index(
 )
 
 const userModel = mongoose.model('user', userSchema)
-
 export default userModel;
 

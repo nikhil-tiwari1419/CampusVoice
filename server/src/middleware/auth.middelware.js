@@ -4,7 +4,7 @@ import config from "../config/config.js";
 
 async function verifyToken(req, res, next) {
     try {
-        const accesstoken = req.cookies?.accesstoken || req.headers.authorization?.split(" ")[1];
+        let accesstoken = req.cookies?.accesstoken || req.headers.authorization?.split(" ")[1];
         if (!accesstoken) {
             return res.status(401).json({
                 success: false,
