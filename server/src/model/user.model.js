@@ -64,9 +64,9 @@ const userSchema = new mongoose.Schema({
         ref:"Branch",
         default: null
     },
-    createdAt:{
+    createdBy:{
         type:mongoose.Schema.Types.ObjectId,
-        ref :"student",
+        ref :"user",
         default: null
     }
 
