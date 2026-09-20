@@ -61,7 +61,7 @@ function RouteErrorFallback() {
 }
 
 // ProtectedRoute
-const ProtectedRoute = ({ children, allowedRoles }) => {
+const ProtectedRoute = ({ children, allowedRoles, requiredRoles }) => {
   const { user, loading } = useAuth()
   if (loading) {
     return <Pageloader />                             // Wait for the initial session check to finish
@@ -69,9 +69,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   if (!user) {
     return <Navigate to='/login' replace/>                       // Redirect to login if not authenticated
   }
-  if (allowedRoles && (!user.role || user.role !== allowedRoles)) {      // login required with roles 
- return  <Navigate to='/unauthorisedperson' />
-} 
+  const roleReq = allowedRoles || requiredRoles
+  if (roleReq && (!user.role || user.role !== roleReq)) {      // login required with roles 
+    return <Navigate to='/unauthorisedperson' />
+  } 
 
   return children
 }
@@ -93,7 +94,15 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>{withSuspense(Userdashboard)}</ProtectedRoute>
       },
       {
+        path: 'userhome',
+        element: <ProtectedRoute>{withSuspense(Userdashboard)}</ProtectedRoute>
+      },
+      {
         path: 'userfrofile',
+        element: <ProtectedRoute>{withSuspense(UserProfile)}</ProtectedRoute>
+      },
+      {
+        path: 'profile',
         element: <ProtectedRoute>{withSuspense(UserProfile)}</ProtectedRoute>
       },
       {
@@ -101,7 +110,15 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>{withSuspense(CaomplainBox)}</ProtectedRoute>
       },
       {
+        path: 'complain',
+        element: <ProtectedRoute>{withSuspense(CaomplainBox)}</ProtectedRoute>
+      },
+      {
         path: 'allstudentcomplain',
+        element: <ProtectedRoute>{withSuspense(Allusercomplain)}</ProtectedRoute>
+      },
+      {
+        path: 'complaints',
         element: <ProtectedRoute>{withSuspense(Allusercomplain)}</ProtectedRoute>
       },
       {
@@ -110,26 +127,29 @@ const router = createBrowserRouter([
       },
 
       // admin routes hai yaha per 
-
       {
         path: 'admindashboard',
-        element: <ProtectedRoute  requiredRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
+      },
+      {
+        path: 'adminhome',
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
       },
       {
         path: 'adminprofile',
-        element: <ProtectedRoute requiredRoles='admin'>{withSuspense(AdminProfile)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(AdminProfile)}</ProtectedRoute>
       },
       {
         path: 'allstudent',
-        element: <ProtectedRoute requiredRoles='admin'>{withSuspense(AllStudent)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(AllStudent)}</ProtectedRoute>
       },
       {
         path: 'completedcomplain',
-        element: <ProtectedRoute requiredRoles='admin'>{withSuspense(CompletedComplain)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(CompletedComplain)}</ProtectedRoute>
       },
       {
         path: 'newcomplain',
-        element: <ProtectedRoute requiredRoles='admin'>{withSuspense(NewComplain)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(NewComplain)}</ProtectedRoute>
       },
 
 
