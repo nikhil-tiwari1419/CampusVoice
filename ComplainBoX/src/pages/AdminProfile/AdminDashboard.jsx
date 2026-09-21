@@ -208,7 +208,7 @@ export default function AdminDashboard() {
       />
 
       <div className="relative max-w-7xl mx-auto space-y-8">
-        
+
         {/* Header Section */}
         <div className="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800/80 pb-6">
           <div>
@@ -290,7 +290,7 @@ export default function AdminDashboard() {
         {/* Controls: Search, Filter Chips, and Department Selector */}
         <div className="bg-[#0F172A]/70 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-xl backdrop-blur-xl space-y-4">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
-            
+
             {/* Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -346,19 +346,17 @@ export default function AdminDashboard() {
                   key={filter}
                   type="button"
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                    activeFilter === filter
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${activeFilter === filter
                       ? 'bg-teal-400 text-slate-950 shadow-md shadow-teal-400/20'
                       : 'bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800'
-                  }`}
+                    }`}
                 >
                   <span>{filter}</span>
                   <span
-                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
-                      activeFilter === filter
+                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${activeFilter === filter
                         ? 'bg-slate-950/20 text-slate-950 font-bold'
                         : 'bg-slate-800 text-slate-400'
-                    }`}
+                      }`}
                   >
                     {count}
                   </span>
@@ -539,33 +537,30 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={() => handleStatusChange(selectedComplaint.id, 'Pending')}
-                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
-                      selectedComplaint.status === 'Pending'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${selectedComplaint.status === 'Pending'
                         ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 ring-1 ring-amber-500/40'
                         : 'bg-slate-800/50 hover:bg-slate-800 text-slate-400 border-slate-800'
-                    }`}
+                      }`}
                   >
                     Set as Pending
                   </button>
                   <button
                     type="button"
                     onClick={() => handleStatusChange(selectedComplaint.id, 'In Progress')}
-                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
-                      selectedComplaint.status === 'In Progress'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${selectedComplaint.status === 'In Progress'
                         ? 'bg-sky-500/20 text-sky-300 border-sky-500/40 ring-1 ring-sky-500/40'
                         : 'bg-slate-800/50 hover:bg-slate-800 text-slate-400 border-slate-800'
-                    }`}
+                      }`}
                   >
                     Mark as In Progress
                   </button>
                   <button
                     type="button"
                     onClick={() => handleStatusChange(selectedComplaint.id, 'Resolved')}
-                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
-                      selectedComplaint.status === 'Resolved'
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${selectedComplaint.status === 'Resolved'
                         ? 'bg-teal-500/20 text-teal-300 border-teal-500/40 ring-1 ring-teal-500/40'
                         : 'bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold border-transparent shadow-md shadow-teal-400/10'
-                    }`}
+                      }`}
                   >
                     Mark as Resolved
                   </button>

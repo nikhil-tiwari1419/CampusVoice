@@ -10,8 +10,8 @@ import { ThemeProvider } from './context/theme'
 
 // pages
 const Userdashboard = lazy(() => import('./pages/UserProfile/UserDashboard'))
-const CaomplainBox = lazy(() => import('./pages/UserProfile/ComplainBox'))
 const UserProfile = lazy(()=> import('./pages/UserProfile/Userprofile'))
+const ComplainBox = lazy(() => import('./pages/UserProfile/ComplainBox'))
 const Feedback = lazy(()=> import('./pages/UserProfile/FeedBack'))
 const Allusercomplain = lazy(()=> import('./pages/UserProfile/AllstudentComplain'))
 
@@ -94,31 +94,15 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>{withSuspense(Userdashboard)}</ProtectedRoute>
       },
       {
-        path: 'userhome',
-        element: <ProtectedRoute>{withSuspense(Userdashboard)}</ProtectedRoute>
-      },
-      {
-        path: 'userfrofile',
+        path: 'userprofile',
         element: <ProtectedRoute>{withSuspense(UserProfile)}</ProtectedRoute>
-      },
-      {
-        path: 'profile',
-        element: <ProtectedRoute>{withSuspense(UserProfile)}</ProtectedRoute>
-      },
-      {
-        path: 'complainbox',
-        element: <ProtectedRoute>{withSuspense(CaomplainBox)}</ProtectedRoute>
       },
       {
         path: 'complain',
-        element: <ProtectedRoute>{withSuspense(CaomplainBox)}</ProtectedRoute>
+        element: <ProtectedRoute>{withSuspense(ComplainBox)}</ProtectedRoute>
       },
       {
         path: 'allstudentcomplain',
-        element: <ProtectedRoute>{withSuspense(Allusercomplain)}</ProtectedRoute>
-      },
-      {
-        path: 'complaints',
         element: <ProtectedRoute>{withSuspense(Allusercomplain)}</ProtectedRoute>
       },
       {
@@ -132,10 +116,6 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
       },
       {
-        path: 'adminhome',
-        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
-      },
-      {
         path: 'adminprofile',
         element: <ProtectedRoute allowedRoles='admin'>{withSuspense(AdminProfile)}</ProtectedRoute>
       },
@@ -144,12 +124,12 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedRoles='admin'>{withSuspense(AllStudent)}</ProtectedRoute>
       },
       {
-        path: 'completedcomplain',
-        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(CompletedComplain)}</ProtectedRoute>
-      },
-      {
         path: 'newcomplain',
         element: <ProtectedRoute allowedRoles='admin'>{withSuspense(NewComplain)}</ProtectedRoute>
+      },
+      {
+        path: 'completedcomplain',
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(CompletedComplain)}</ProtectedRoute>
       },
 
 

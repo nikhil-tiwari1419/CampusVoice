@@ -1,11 +1,10 @@
-import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
 
 function MainLayout() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#080C14] text-slate-100 font-sans selection:bg-teal-500/30 selection:text-teal-200">
+    <div className="min-h-screen flex flex-col bg-linear-to-b from-white via-blue-50 to-cyan-50 text-gray-900 font-sans selection:bg-teal-200 selection:text-teal-900">
       <Navbar />
       <main className="flex-1 flex flex-col">
         <Outlet />

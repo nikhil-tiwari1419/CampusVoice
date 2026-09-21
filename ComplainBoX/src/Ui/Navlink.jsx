@@ -1,26 +1,26 @@
 // navLinks.js — shared data used by DesktopNavbar & MobileNavbar
-import { House, Music, Album, User, ArrowUpFromLine, Users, Headphones, HelpCircle } from 'lucide-react'
+import { House, BookOpen, HelpCircle, User, ArrowUpFromLine, Users, Headphones, BarChart3 } from 'lucide-react'
 
 export const PUBLIC_LINKS = [
     { label: 'Home', section: 'home', icon: House },
-    { label: 'For Artists', section: 'artist-workflow', icon: Headphones },
-    { label: 'For Listeners', section: 'listener-workflow', icon: Users },
+    { label: 'How to Use', section: 'howtouse', icon: BookOpen },
     { label: 'FAQs', section: 'faqs', icon: HelpCircle },
+    { label: 'Contact', section: 'contact', icon: Headphones },
 ]
 
 export const USER_LINKS = [
-    { label: 'Home', path: '/user-Dashboard', icon: House },
-    { label: 'Music Feed', path: '/Local-Feed', icon: Music },
-    { label: 'Album', path: '/album', icon: Album },
-    { label: 'Artist', path: '/artist', icon: Users },
-    { label: 'Profile', path: '/Profile', icon: User },
+    { label: 'Home', path: '/userdashboard', icon: House },
+    { label: 'Profile', path: '/userprofile', icon: User },
+    { label: 'Create Complaint', path: '/complain', icon: BarChart3 },
+    { label: 'My Complaints', path: '/allstudentcomplain', icon: Users },
+    { label: 'Feedback', path: '/feedback', icon: Headphones },
 ]
 
 export const ADMIN_LINKS = [
-    { label: 'Home', path: '/artist-Dashboard', icon: House },
-    { label: 'Upload', path: '/create-music', icon: ArrowUpFromLine },
-    { label: 'Album', path: '/Artist-album', icon: Album },
-    { label: 'My Posts', path: '/your-post', icon: User },
-    { label: 'Profile', path: '/Profile', icon: User },
+    { label: 'Home', path: '/admindashboard', icon: House },
+    { label: 'Profile', path: '/adminprofile', icon: User },
+    { label: 'Students', path: '/allstudent', icon: Users },
+    { label: 'New Complaints', path: '/newcomplain', icon: ArrowUpFromLine },
+    { label: 'Resolved', path: '/completedcomplain', icon: BarChart3 },
 ]
 
