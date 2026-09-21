@@ -27,7 +27,7 @@ const CompletedComplain = lazy(() => import('./pages/AdminProfile/CompletedIssue
 const Login = lazy(() => import('./pages/Auth/Login'))
 const UnAuthPerson = lazy(()=> import('./unauthorisedperson'))
 const ForgootPass = lazy(()=> import('./pages/Auth/ForgootPassword'))
-const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'))
+const LandingPage = lazy(() => import('./pages/LandingPage/WelcomePage'))
 const VerifyEmail = lazy(() => import('./pages/Auth/VerifyEmail'))
 
 const withSuspense = (Component) => (

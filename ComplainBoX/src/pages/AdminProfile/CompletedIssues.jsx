@@ -18,7 +18,7 @@ import {
   ShieldCheck,
   User
 } from 'lucide-react'
-import api from '../../context/auth.jsx'
+import api from '../../context/auth'
 import toast from 'react-hot-toast'
 
 export default function CompletedIssues() {

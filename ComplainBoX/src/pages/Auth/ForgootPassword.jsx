@@ -12,7 +12,7 @@ import {
   ShieldAlert, 
   RotateCcw
 } from "lucide-react";
-import { useAuth } from "../../context/auth.jsx";
+import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 
 export default function ForgootPassword() {

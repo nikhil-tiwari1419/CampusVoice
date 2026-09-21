@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import api from "../../context/auth.jsx";
+import api from "../../context/auth";
 import {
   MessageSquare,
   Star,
