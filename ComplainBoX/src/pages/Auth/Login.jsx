@@ -100,38 +100,38 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#080C14] flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
+    <div className="relative min-h-screen w-full bg-white flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[300px] h-[250px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-blue-50/40 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[300px] h-[250px] bg-teal-50/40 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Subtle grid pattern */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage:
-            "linear-gradient(#94A3B8 1px, transparent 1px), linear-gradient(90deg, #94A3B8 1px, transparent 1px)",
+            "linear-gradient(#E5E7EB 1px, transparent 1px), linear-gradient(90deg, #E5E7EB 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
 
       <div className="relative w-full max-w-md">
         {/* Main Card */}
-        <div className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/80 backdrop-blur-xl">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-lg shadow-slate-200/40 backdrop-blur-xl">
           
           {/* Top Status & Brand Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-600" />
               </span>
-              <span className="text-[11px] font-medium tracking-wider uppercase text-slate-400">CampusVoice Auth</span>
+              <span className="text-[11px] font-medium tracking-wider uppercase text-slate-500">CampusVoice Auth</span>
             </div>
-            
+
             <button
               type="button"
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-teal-400 transition-colors"
+              className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-teal-600 transition-colors"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Admin portal</span>
@@ -139,14 +139,14 @@ export default function Login() {
           </div>
 
           {/* Segmented Mode Switcher */}
-          <div className="grid grid-cols-2 p-1 mb-6 bg-[#090D16] border border-slate-800/60 rounded-xl">
+          <div className="grid grid-cols-2 p-1 mb-6 bg-slate-100 border border-slate-200 rounded-xl">
             <button
               type="button"
               onClick={() => switchMode("login")}
               className={`py-2 text-xs font-semibold rounded-lg transition-all ${
                 mode === "login"
-                  ? "bg-slate-800 text-slate-100 shadow-sm shadow-black/40"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-white text-slate-900 shadow-sm shadow-slate-200/60"
+                  : "text-slate-600 hover:text-slate-700"
               }`}
             >
               Sign In
@@ -156,8 +156,8 @@ export default function Login() {
               onClick={() => switchMode("signup")}
               className={`py-2 text-xs font-semibold rounded-lg transition-all ${
                 mode === "signup"
-                  ? "bg-slate-800 text-slate-100 shadow-sm shadow-black/40"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-white text-slate-900 shadow-sm shadow-slate-200/60"
+                  : "text-slate-600 hover:text-slate-700"
               }`}
             >
               Create Account
@@ -165,10 +165,10 @@ export default function Login() {
           </div>
 
           <div className="mb-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               {mode === "signup" ? "Create your account" : "Welcome back"}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
               {mode === "signup"
                 ? "Register with your student credentials to submit grievances."
                 : "Log in to track existing complaints or file a new report."}
@@ -187,32 +187,32 @@ export default function Login() {
             {/* Username — signup only */}
             {mode === "signup" && (
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">Username</label>
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">Username</label>
                 <div className="relative">
-                  <AtSign className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <AtSign className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="text"
                     placeholder="johndoe"
                     value={form.username}
                     onChange={(e) => update("username", e.target.value)}
-                    className={`w-full bg-[#090D16]/80 border rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all focus:ring-2 ${
+                    className={`w-full bg-slate-50 border rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all focus:ring-2 ${
                       errors.username
-                        ? "border-rose-500/80 focus:ring-rose-500/20"
-                        : "border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-teal-400/20"
+                        ? "border-rose-400 focus:ring-rose-200"
+                        : "border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-teal-100"
                     }`}
                   />
                 </div>
-                {errors.username && <p className="text-xs text-rose-400 mt-1.5 flex items-center gap-1">{errors.username}</p>}
+                {errors.username && <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">{errors.username}</p>}
               </div>
             )}
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-slate-300 mb-1.5">
+              <label htmlFor="email" className="block text-xs font-medium text-slate-700 mb-1.5">
                 Campus Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   id="email"
                   type="email"
@@ -220,33 +220,33 @@ export default function Login() {
                   placeholder="student@campus.edu"
                   value={form.email}
                   onChange={(e) => update("email", e.target.value)}
-                  className={`w-full bg-[#090D16]/80 border rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all focus:ring-2 ${
+                  className={`w-full bg-slate-50 border rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all focus:ring-2 ${
                     errors.email
-                      ? "border-rose-500/80 focus:ring-rose-500/20"
-                      : "border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-teal-400/20"
+                      ? "border-rose-400 focus:ring-rose-200"
+                      : "border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-teal-100"
                   }`}
                 />
               </div>
-              {errors.email && <p className="text-xs text-rose-400 mt-1.5 flex items-center gap-1">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">{errors.email}</p>}
             </div>
 
             {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="password" className="block text-xs font-medium text-slate-300">
+                <label htmlFor="password" className="block text-xs font-medium text-slate-700">
                   Password
                 </label>
                 {mode === "signin" && (
                   <Link
                     to="/forgootpass"
-                    className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                    className="text-xs text-teal-600 hover:text-teal-700 transition-colors"
                   >
                     Forgot password?
                   </Link>
                 )}
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   id="password"
                   type={showPw ? "text" : "password"}
@@ -254,31 +254,31 @@ export default function Login() {
                   placeholder="••••••••"
                   value={form.password}
                   onChange={(e) => update("password", e.target.value)}
-                  className={`w-full bg-[#090D16]/80 border rounded-xl py-2.5 pl-10 pr-10 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all focus:ring-2 ${
+                  className={`w-full bg-slate-50 border rounded-xl py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all focus:ring-2 ${
                     errors.password
-                      ? "border-rose-500/80 focus:ring-rose-500/20"
-                      : "border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-teal-400/20"
+                      ? "border-rose-400 focus:ring-rose-200"
+                      : "border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-teal-100"
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-0.5"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-0.5"
                 >
                   {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-rose-400 mt-1.5">{errors.password}</p>}
+              {errors.password && <p className="text-xs text-rose-600 mt-1.5">{errors.password}</p>}
             </div>
 
             {/* Confirm password — signup only */}
             {mode === "signup" && (
               <div>
-                <label htmlFor="confirm" className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label htmlFor="confirm" className="block text-xs font-medium text-slate-700 mb-1.5">
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     id="confirm"
                     type={showConfirm ? "text" : "password"}
@@ -286,32 +286,32 @@ export default function Login() {
                     placeholder="••••••••"
                     value={form.confirm}
                     onChange={(e) => update("confirm", e.target.value)}
-                    className={`w-full bg-[#090D16]/80 border rounded-xl py-2.5 pl-10 pr-10 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all focus:ring-2 ${
+                    className={`w-full bg-slate-50 border rounded-xl py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all focus:ring-2 ${
                       errors.confirm
-                        ? "border-rose-500/80 focus:ring-rose-500/20"
+                        ? "border-rose-400 focus:ring-rose-200"
                         : passwordsMatch
-                        ? "border-teal-500/70 focus:border-teal-400 focus:ring-teal-400/20"
-                        : "border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-teal-400/20"
+                        ? "border-teal-400 focus:border-teal-500 focus:ring-teal-100"
+                        : "border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-teal-100"
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirm((v) => !v)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-0.5"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-0.5"
                   >
                     {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
                 {errors.confirm ? (
-                  <p className="text-xs text-rose-400 mt-1.5 flex items-center gap-1">
+                  <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
                     <X className="w-3.5 h-3.5" /> {errors.confirm}
                   </p>
                 ) : passwordsMatch ? (
-                  <p className="text-xs text-teal-400 mt-1.5 flex items-center gap-1 font-medium">
+                  <p className="text-xs text-teal-600 mt-1.5 flex items-center gap-1 font-medium">
                     <Check className="w-3.5 h-3.5" /> Passwords match
                   </p>
                 ) : passwordsMismatch ? (
-                  <p className="text-xs text-rose-400 mt-1.5 flex items-center gap-1">
+                  <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
                     <X className="w-3.5 h-3.5" /> Passwords don't match
                   </p>
                 ) : null}
@@ -322,40 +322,40 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-teal-400 hover:bg-teal-300 text-slate-950 font-semibold text-sm rounded-xl py-2.5 mt-2 transition-all shadow-md shadow-teal-400/10 hover:shadow-teal-400/20 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm rounded-xl py-2.5 mt-2 transition-all shadow-md shadow-teal-600/20 hover:shadow-teal-600/30 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
             >
-              {isLoading && <Loader2 className="w-4 h-4 animate-spin text-slate-950" />}
+              {isLoading && <Loader2 className="w-4 h-4 animate-spin text-white" />}
               <span>{isLoading ? "Processing..." : mode === "signup" ? "Create Account" : "Sign In"}</span>
             </button>
           </form>
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-5">
-            <div className="h-px flex-1 bg-slate-800/80" />
+            <div className="h-px flex-1 bg-slate-200" />
             <span className="text-[11px] uppercase tracking-wider text-slate-500 font-medium">Or continue with</span>
-            <div className="h-px flex-1 bg-slate-800/80" />
+            <div className="h-px flex-1 bg-slate-200" />
           </div>
 
           {/* Social Sign-in */}
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-3 bg-[#090D16]/60 hover:bg-slate-800/50 border border-slate-800 hover:border-slate-700 rounded-xl py-2.5 text-sm text-slate-200 font-medium transition-all cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-xl py-2.5 text-sm text-slate-900 font-medium transition-all cursor-pointer"
           >
             <GoogleMark className="w-4 h-4" />
             <span>Google Workspace</span>
           </button>
 
           {/* Footer toggle */}
-          <div className="mt-6 pt-4 border-t border-slate-800/60 text-center">
+          <div className="mt-6 pt-4 border-t border-slate-200 text-center">
             <button
               type="button"
               onClick={() => switchMode(mode === "signup" ? "login" : "signup")}
-              className="text-xs text-slate-400 hover:text-teal-400 transition-colors cursor-pointer"
+              className="text-xs text-slate-600 hover:text-teal-600 transition-colors cursor-pointer"
             >
               {mode === "signup" ? (
-                <>Already have an account? <span className="font-semibold text-slate-200 underline underline-offset-4">Sign in</span></>
+                <>Already have an account? <span className="font-semibold text-slate-900 underline underline-offset-4">Sign in</span></>
               ) : (
-                <>Don't have an account yet? <span className="font-semibold text-slate-200 underline underline-offset-4">Register</span></>
+                <>Don't have an account yet? <span className="font-semibold text-slate-900 underline underline-offset-4">Register</span></>
               )}
             </button>
           </div>

@@ -44,13 +44,13 @@ function Navbar() {
             handleSectionClick(item.section)
             onClick?.()
           }}
-          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 sm:text-2xl text-sm font-medium ${
             activeSection === item.section
-              ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/30'
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+              ? 'bg-gray-300 text-white shadow-lg shadow-blue-600/30'
+              : 'text-gray-800 hover:text-gray-900 hover:bg-gray-100'
           }`}
         >
-          {item.icon && <item.icon className="w-4 h-4" />}
+          {item.icon && <item.icon className="sm:w-8 sm:h-8 w-4 h-4" />}
           <span>{item.label}</span>
         </button>
       )
@@ -61,10 +61,10 @@ function Navbar() {
         to={item.path}
         onClick={onClick}
         className={({ isActive }) =>
-          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
+          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xl font-medium ${
             isActive
-              ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/30'
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+              ? 'bg-cyan-100 text-black shadow-lg shadow-gray-600/30'
+              : 'text-gray-800 hover:text-gray-900 hover:bg-gray-100'
           }`
         }
       >
@@ -76,18 +76,18 @@ function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center sm:h-30 h-16">
           {/* Logo Section */}
           <div className="shrink-0">
             <NavLink
               to="/"
-              className="flex items-center gap-2 text-xl font-bold text-teal-600 hover:text-teal-700 transition-colors"
+              className="flex items-center gap-2 text-xl font-bold text-black hover:text-blue-700 transition-colors"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
-                <img src="/logo1.jpeg" alt="Campus Voice" className="w-full h-full object-cover rounded-lg" />
+              <div className="w-28 h-28 flex items-center justify-center shrink-0">
+                <img src="/logo.png" alt="Campus Voice" className=" sm:w-full sm:h-full w-14 h-14 object-cover rounded-lg" />
               </div>
-              <span className="hidden sm:inline">Campus Voice</span>
+              <span className="hidden text-4xl sm:inline">Campus Voice</span>
             </NavLink>
           </div>
 
@@ -120,10 +120,10 @@ function Navbar() {
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  `px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  `px-5 py-3 rounded-lg  text-2xl font-medium transition-all duration-200 ${
                     isActive
                       ? 'bg-teal-600 text-white'
-                      : 'bg-teal-600 text-white hover:bg-teal-700'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`
                 }
               >

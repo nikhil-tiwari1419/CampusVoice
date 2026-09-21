@@ -41,17 +41,17 @@ function RouteErrorFallback() {
   const error = useRouteError()
 
   return (
-    <div className="min-h-screen w-full bg-[#080C14] flex flex-col items-center justify-center p-6 text-center select-none font-sans">
-      <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mb-4 shadow-lg shadow-rose-500/5">
+    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center p-6 text-center select-none font-sans">
+      <div className="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mb-4 shadow-lg shadow-rose-200/20">
         <AlertTriangle className="w-7 h-7" />
       </div>
-      <h1 className="text-2xl font-bold text-slate-100 tracking-tight mb-2">Something went wrong</h1>
-      <p className="text-xs sm:text-sm text-slate-400 max-w-sm mb-6">
+      <h1 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">Something went wrong</h1>
+      <p className="text-xs sm:text-sm text-slate-600 max-w-sm mb-6">
         {error?.statusText || error?.message || 'An unexpected error occurred while loading this page.'}
       </p>
       <NavLink
         to="/"
-        className="inline-flex items-center gap-2 bg-teal-400 hover:bg-teal-300 text-slate-950 font-semibold px-5 py-2.5 rounded-xl text-xs transition-all shadow-md shadow-teal-400/10 cursor-pointer"
+        className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition-all shadow-md shadow-teal-600/20 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         <span>Return to Home</span>
@@ -86,9 +86,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: withSuspense(LandingPage) },
 
-      // Protected Routes 
+      // Protected Routes
 
-      //user routes hai yaha per
+//user routes hai yaha per
       {
         path: 'userdashboard',
         element: <ProtectedRoute>{withSuspense(Userdashboard)}</ProtectedRoute>
@@ -110,7 +110,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>{withSuspense(Feedback)}</ProtectedRoute>
       },
 
-      // admin routes hai yaha per 
+      // admin routes hai yaha per
       {
         path: 'admindashboard',
         element: <ProtectedRoute allowedRoles='admin'>{withSuspense(Admindashboard)}</ProtectedRoute>
@@ -134,14 +134,15 @@ const router = createBrowserRouter([
 
 
       // --- Public Routes ---
-      { path: 'login', element: withSuspense(Login) },
       { path: 'landingPage', element: withSuspense(LandingPage) },
       { path: '404page', element: withSuspense(UnAuthPerson) },
-      { path: 'verify-email', element: withSuspense(VerifyEmail) },
-      { path: 'forgootpass', element: withSuspense(ForgootPass) },
       { path: '*', element: withSuspense(LandingPage) },
     ],
   },
+  // Auth routes WITHOUT navbar and footer
+  { path: 'login', element: withSuspense(Login) },
+  { path: 'verify-email', element: withSuspense(VerifyEmail) },
+  { path: 'forgootpass', element: withSuspense(ForgootPass) },
 ])
 
 function App() {

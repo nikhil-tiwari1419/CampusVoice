@@ -84,10 +84,10 @@ export default function AllComplaints() {
   }, []);
 
   const statusStyles = {
-    Resolved: "bg-teal-500/10 border-teal-500/20 text-teal-400",
-    "In Progress": "bg-sky-500/10 border-sky-500/20 text-sky-400",
-    Pending: "bg-amber-500/10 border-amber-500/20 text-amber-400",
-    Rejected: "bg-rose-500/10 border-rose-500/20 text-rose-400",
+    Resolved: "bg-teal-500/10 border-teal-500/20 text-teal-600",
+    "In Progress": "bg-sky-500/10 border-sky-500/20 text-sky-600",
+    Pending: "bg-amber-500/10 border-amber-500/20 text-amber-600",
+    Rejected: "bg-rose-500/10 border-rose-500/20 text-rose-600",
   };
 
   const statusIcons = {
@@ -108,7 +108,7 @@ export default function AllComplaints() {
   });
 
   return (
-    <div className="relative min-h-screen w-full bg-[#080C14] text-slate-100 font-sans overflow-hidden select-none py-12 px-4 sm:px-6">
+    <div className="relative min-h-screen w-full bg-white text-slate-900 font-sans overflow-hidden select-none py-12 px-4 sm:px-6">
       {/* Background ambient lighting */}
       <div className="absolute top-1/6 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-teal-500/10 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[350px] h-[250px] bg-indigo-500/5 rounded-full blur-[110px] pointer-events-none" />
@@ -124,21 +124,21 @@ export default function AllComplaints() {
       />
 
       <div className="relative max-w-5xl mx-auto space-y-6">
-        
+
         {/* Header Bar */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-semibold mb-2">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-teal-500" />
               </span>
               Complaint History & Audit
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               Complaint History
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
               Track progress, officer notes, and verified resolutions for all submitted grievances.
             </p>
           </div>
@@ -161,12 +161,12 @@ export default function AllComplaints() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by ID, department, or keyword..."
-              className="w-full bg-[#0F172A]/80 border border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 outline-none transition-all"
+              className="w-full bg-white border border-slate-200 hover:border-slate-300 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-3 text-xs sm:text-sm text-slate-900 placeholder-slate-400 outline-none transition-all"
             />
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 bg-[#0F172A]/80 p-1 rounded-xl border border-slate-800 text-xs overflow-x-auto">
+          <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 text-xs overflow-x-auto">
             {['All', 'Pending', 'In Progress', 'Resolved'].map((tab) => (
               <button
                 key={tab}
@@ -175,7 +175,7 @@ export default function AllComplaints() {
                 className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                   statusFilter.toLowerCase() === tab.toLowerCase()
                     ? 'bg-teal-400 text-slate-950 shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {tab}
@@ -186,20 +186,20 @@ export default function AllComplaints() {
 
         {/* Complaints List */}
         {loading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin text-teal-400" />
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-slate-600">
+            <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
             <p className="text-xs">Loading complaint records...</p>
           </div>
         ) : filteredComplaints.length === 0 ? (
-          <div className="bg-[#0F172A]/80 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 space-y-3">
-            <FileText className="w-10 h-10 mx-auto text-slate-600 mb-1" />
-            <p className="text-sm font-semibold text-slate-300">No complaints found</p>
+          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 space-y-3">
+            <FileText className="w-10 h-10 mx-auto text-slate-400 mb-1" />
+            <p className="text-sm font-semibold text-slate-700">No complaints found</p>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
               You haven't filed any complaints matching this filter yet.
             </p>
             <Link
               to="/complain"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-teal-400 hover:underline pt-2"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-teal-600 hover:underline pt-2"
             >
               Submit a Complaint Now ➔
             </Link>
@@ -211,22 +211,22 @@ export default function AllComplaints() {
               return (
                 <div
                   key={c.id}
-                  className="bg-[#0F172A]/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-lg backdrop-blur-xl hover:border-slate-700 transition-all space-y-3"
+                  className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-lg shadow-slate-200/40 backdrop-blur-xl hover:border-slate-300 transition-all space-y-3"
                 >
                   <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="font-mono text-xs font-bold text-teal-400">
+                        <span className="font-mono text-xs font-bold text-teal-600">
                           {c.id}
                         </span>
-                        <span className="text-xs font-semibold text-slate-300">
+                        <span className="text-xs font-semibold text-slate-700">
                           · {c.department}
                         </span>
                         <span className="text-[11px] font-mono text-slate-500">
                           {c.date}
                         </span>
                       </div>
-                      <h3 className="text-sm sm:text-base font-bold text-slate-100">
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
                         {c.subject}
                       </h3>
                     </div>
@@ -242,17 +242,17 @@ export default function AllComplaints() {
                   </div>
 
                   {c.message && (
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 leading-relaxed">
                       {c.message}
                     </p>
                   )}
 
                   {c.officerNote && (
-                    <div className="text-[11px] bg-[#090D16]/90 p-3 rounded-xl border border-slate-800 text-slate-300 flex items-center justify-between flex-wrap gap-2">
+                    <div className="text-[11px] bg-slate-50 p-3 rounded-xl border border-slate-200 text-slate-700 flex items-center justify-between flex-wrap gap-2">
                       <span>
                         <strong>Officer Update:</strong> {c.officerNote}
                       </span>
-                      <span className="text-teal-400 font-mono text-[10px]">
+                      <span className="text-teal-600 font-mono text-[10px]">
                         Verified by Cell HOD
                       </span>
                     </div>

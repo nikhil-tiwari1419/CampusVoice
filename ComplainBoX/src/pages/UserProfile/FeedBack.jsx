@@ -24,22 +24,6 @@ export default function Feedback() {
   const [fetchingComplaints, setFetchingComplaints] = useState(true);
 
   const [complaints, setComplaints] = useState([]);
-  const [feedbackHistory, setFeedbackHistory] = useState([
-    {
-      id: 1,
-      complaint: "Canteen hygiene complaint",
-      rating: 4,
-      comment: "Issue was resolved quickly, food quality has improved significantly.",
-      date: "02 Sep 2026",
-    },
-    {
-      id: 2,
-      complaint: "Classroom projector audio failure",
-      rating: 5,
-      comment: "IT staff replaced the cabling within 4 hours. Great turnaround!",
-      date: "20 Aug 2026",
-    },
-  ]);
 
   useEffect(() => {
     async function loadComplaints() {
@@ -122,7 +106,7 @@ export default function Feedback() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#080C14] text-slate-100 font-sans overflow-hidden select-none py-12 px-4 sm:px-6">
+    <div className="relative min-h-screen w-full bg-white text-slate-900 font-sans overflow-hidden select-none py-12 px-4 sm:px-6">
       {/* Background ambient lighting */}
       <div className="absolute top-1/6 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-teal-500/10 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[350px] h-[250px] bg-indigo-500/5 rounded-full blur-[110px] pointer-events-none" />
@@ -140,29 +124,29 @@ export default function Feedback() {
       <div className="relative max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-semibold mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Resolution Audit</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
             Rate Your Resolution
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-md mx-auto">
             Help improve campus administrative responsiveness by rating how your grievances were handled.
           </p>
         </div>
 
         {/* Feedback Form Card */}
-        <div className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/80 backdrop-blur-xl mb-8">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-slate-200/40 backdrop-blur-xl mb-8">
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
             {/* Complaint Selector */}
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+              <label className="block text-xs font-medium text-slate-700 mb-1.5 flex items-center justify-between">
                 <span>Select Grievance / Complaint</span>
                 {complaints.length === 0 && !fetchingComplaints && (
                   <Link
                     to="/complain"
-                    className="text-[11px] text-teal-400 hover:text-teal-300 flex items-center gap-1"
+                    className="text-[11px] text-teal-600 hover:text-teal-500 flex items-center gap-1"
                   >
                     <span>File a complaint</span>
                     <ArrowRight className="w-3 h-3" />
@@ -176,7 +160,7 @@ export default function Feedback() {
                   value={selectedComplaint}
                   onChange={(e) => setSelectedComplaint(e.target.value)}
                   disabled={fetchingComplaints}
-                  className="w-full appearance-none bg-[#090D16]/80 border border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 outline-none transition-all cursor-pointer disabled:opacity-50"
+                  className="w-full appearance-none bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition-all cursor-pointer disabled:opacity-50"
                 >
                   {fetchingComplaints ? (
                     <option value="">Loading your complaints...</option>
@@ -187,7 +171,7 @@ export default function Feedback() {
                       <option
                         key={c._id || c.id}
                         value={c._id || c.id}
-                        className="bg-slate-900 text-slate-100"
+                        className="bg-white text-slate-900"
                       >
                         {c.subject} — [{c.status || "Pending"}]
                       </option>
@@ -199,7 +183,7 @@ export default function Feedback() {
 
             {/* Star Rating */}
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-slate-700 mb-1.5">
                 Resolution Quality Rating
               </label>
               <div className="flex items-center gap-2">
@@ -216,13 +200,13 @@ export default function Feedback() {
                       className={`w-7 h-7 transition-colors ${
                         star <= (hoverRating || rating)
                           ? "fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]"
-                          : "fill-transparent text-slate-700 hover:text-slate-500"
+                          : "fill-transparent text-slate-300 hover:text-slate-400"
                       }`}
                     />
                   </button>
                 ))}
                 {rating > 0 && (
-                  <span className="text-xs font-medium text-teal-400 ml-2">
+                  <span className="text-xs font-medium text-teal-600 ml-2">
                     {rating === 5
                       ? "Outstanding"
                       : rating === 4
@@ -239,7 +223,7 @@ export default function Feedback() {
 
             {/* Comment */}
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-slate-700 mb-1.5">
                 Detailed Feedback & Suggestions
               </label>
               <div className="relative">
@@ -249,7 +233,7 @@ export default function Feedback() {
                   onChange={(e) => setComment(e.target.value)}
                   rows={4}
                   placeholder="Share details regarding the timeliness, staff communication, or quality of the fix..."
-                  className="w-full bg-[#090D16]/80 border border-slate-800 hover:border-slate-700 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all resize-none"
+                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-teal-400/80 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all resize-none"
                 />
               </div>
             </div>
@@ -274,54 +258,7 @@ export default function Feedback() {
           </form>
         </div>
 
-        {/* Previous Feedback Log */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <History className="w-4 h-4 text-slate-500" />
-              <h2 className="text-sm font-semibold text-slate-300">
-                Your Feedback History
-              </h2>
-            </div>
-            <span className="text-xs text-slate-500">
-              {feedbackHistory.length} review{feedbackHistory.length !== 1 ? "s" : ""}
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {feedbackHistory.map((fb) => (
-              <div
-                key={fb.id}
-                className="bg-[#0F172A]/80 border border-slate-800/80 rounded-2xl p-5 shadow-lg shadow-black/40 backdrop-blur-xl"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-slate-100">
-                    {fb.complaint}
-                  </h3>
-                  <div className="flex items-center gap-0.5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`w-3.5 h-3.5 ${
-                          star <= fb.rating
-                            ? "fill-amber-400 text-amber-400"
-                            : "fill-transparent text-slate-700"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-xs text-slate-400 mb-2.5 leading-relaxed">
-                  {fb.comment}
-                </p>
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
-                  <CheckCircle2 className="w-3 h-3 text-teal-400" />
-                  <span className="font-mono">{fb.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+       
       </div>
     </div>
   );
