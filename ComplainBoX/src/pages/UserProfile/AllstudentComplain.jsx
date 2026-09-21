@@ -14,7 +14,7 @@ import {
   AlertCircle,
   Loader2
 } from "lucide-react";
-import api from "../../context/auth";
+import api from "../../context/auth.jsx";
 
 export default function AllComplaints() {
   const [searchTerm, setSearchTerm] = useState("");

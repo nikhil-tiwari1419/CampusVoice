@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   AlertCircle
 } from 'lucide-react'
-import api from '../../context/auth'
+import api from '../../context/auth.jsx'
 
 export default function ComplainBox() {
   const navigate = useNavigate()

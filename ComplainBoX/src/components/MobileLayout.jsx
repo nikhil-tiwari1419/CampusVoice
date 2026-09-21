@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Home, PlusCircle, History, User, GraduationCap } from 'lucide-react'
-import { useAuth } from '../context/auth'
+import { useAuth } from '../context/auth.jsx'
 
 /**
  * MobileLayout

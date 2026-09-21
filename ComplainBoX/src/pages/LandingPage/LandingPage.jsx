@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ArrowRight, Users, Lock, Zap, BookOpen, BarChart3, Shield } from 'lucide-react'
-import { useAuth } from '../../context/auth'
-import Faq from '../../components/Faq'
+import { useAuth } from '../../context/auth.jsx'
+import Faq from '../../components/Faq.jsx'
 
 export default function LandingPage() {
   const { user } = useAuth()

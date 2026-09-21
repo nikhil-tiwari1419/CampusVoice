@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '../Layout/Navbar'
-import Footer from '../Layout/Footer'
+import Navbar from '../Layout/Navbar.jsx'
+import Footer from '../Layout/Footer.jsx'
 
 /**
  * DesktopLayout

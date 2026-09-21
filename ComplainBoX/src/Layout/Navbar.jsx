@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Menu, X, LogOut } from 'lucide-react'
-import { PUBLIC_LINKS, USER_LINKS, ADMIN_LINKS } from '../Ui/Navlink'
-import { useAuth } from '../context/auth'
+import { PUBLIC_LINKS, USER_LINKS, ADMIN_LINKS } from '../Ui/Navlink.jsx'
+import { useAuth } from '../context/auth.jsx'
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)

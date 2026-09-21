@@ -20,7 +20,7 @@ import {
   Sparkles,
   Inbox
 } from 'lucide-react'
-import api, { useAuth } from '../../context/auth'
+import api, { useAuth } from '../../context/auth.jsx'
 import toast from 'react-hot-toast'
 
 export default function AdminDashboard() {

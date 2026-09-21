@@ -19,7 +19,7 @@ import {
   Sparkles,
   MessageSquare
 } from 'lucide-react'
-import api from '../../context/auth'
+import api from '../../context/auth.jsx'
 import toast from 'react-hot-toast'
 
 export default function NewComplain() {

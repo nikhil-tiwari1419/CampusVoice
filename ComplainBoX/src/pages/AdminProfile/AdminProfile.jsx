@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../context/auth'
+import { useAuth } from '../../context/auth.jsx'
 import api from '../../context/auth'
 import toast from 'react-hot-toast'
 import {
