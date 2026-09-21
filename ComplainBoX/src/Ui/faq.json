@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "question": "What is Campus Voice?",
+    "answer": "Campus Voice is a student grievance portal designed to provide a secure and transparent platform for students to lodge complaints, share concerns, and communicate with administrators. It ensures every voice is heard and every issue is addressed promptly."
+  },
+  {
+    "id": 2,
+    "question": "How do I file a complaint as a student?",
+    "answer": "Log in to your account using your credentials. Navigate to 'Create Complaint' from the dashboard, fill in the complaint details with accurate information, attach supporting documents if needed, and submit. You'll receive a tracking ID to monitor your complaint status."
+  },
+  {
+    "id": 3,
+    "question": "Can I track the status of my complaint?",
+    "answer": "Yes! Once submitted, you can view your complaint in the 'My Complaints' section. Each complaint has a status indicator showing whether it's pending, under review, or resolved. You'll also receive updates via email."
+  },
+  {
+    "id": 4,
+    "question": "What types of grievances can I report?",
+    "answer": "You can report academic issues, hostel problems, facility complaints, harassment concerns, administrative issues, or any other campus-related grievance. Our platform is designed to handle all types of student concerns professionally and confidentially."
+  },
+  {
+    "id": 5,
+    "question": "Is my complaint information confidential?",
+    "answer": "Absolutely. All complaints are treated with utmost confidentiality. Only authorized administrators can access your complaint details. Your personal information is protected and will not be shared with unauthorized parties."
+  },
+  {
+    "id": 6,
+    "question": "How long does it take to resolve a complaint?",
+    "answer": "Resolution time varies based on the complexity of the issue. Typically, complaints are acknowledged within 24-48 hours and resolved within 5-7 working days. You can check the current status anytime through your dashboard."
+  },
+  {
+    "id": 7,
+    "question": "Can I edit or delete my complaint after submission?",
+    "answer": "Once submitted, complaints cannot be edited or deleted directly. However, you can add follow-up comments or provide additional information through the complaint details page. Contact administrators for special cases."
+  },
+  {
+    "id": 8,
+    "question": "What should I do if I don't see a resolution?",
+    "answer": "If you're unsatisfied with the resolution or need further assistance, you can escalate your complaint through the platform. Click on 'Escalate' in your complaint details and provide additional context. The senior administration will review it."
+  }
+]
