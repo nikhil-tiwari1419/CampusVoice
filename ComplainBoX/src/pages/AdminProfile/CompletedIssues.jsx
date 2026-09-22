@@ -7,3 +7,4 @@ function CompletedIssues() {
 }
 
 export default CompletedIssues
+
