@@ -14,67 +14,65 @@ import {
   AlertCircle,
   Loader2
 } from "lucide-react";
-import api from "../../context/auth";
+import { getComplain } from "../../api/user";
 
 export default function AllComplaints() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [complaints, setComplaints] = useState([]);
 
   // Fetch complaints from backend
   useEffect(() => {
     async function fetchComplaints() {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await api.get('/user/allcomplain');
-        if (res.data?.data && Array.isArray(res.data.data)) {
-          // Normalize backend structure to UI format
-          const formatted = res.data.data.map((c) => ({
+        const result = await getComplain();
+
+        const list = Array.isArray(result)
+          ? result
+          : Array.isArray(result?.data)
+            ? result.data
+            : [];
+
+        console.log("RAW COMPLAINTS:", list)
+
+        const formatted = list.map((c) => {
+          const yearValue = c.batch?.year; 
+
+          return {
             id: c._id || `CMP-${Math.floor(1000 + Math.random() * 9000)}`,
-            subject: c.subject || 'General Grievance',
-            message: c.message || '',
-            department: c.batch?.branch?.name || c.batch?.program?.name || 'Campus Cell',
-            date: new Date(c.createdAt || Date.now()).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric'
-            }),
-            status: c.status === 'resolved' ? 'Resolved' : c.status === 'read' ? 'In Progress' : 'Pending',
-            student: c.user?.username || 'Student',
-          }));
-          setComplaints(formatted);
-        }
+            subject: c.subject || "General Grievance",
+            message: c.message || "",
+            department:
+              c.batch?.branch?.name || c.batch?.program?.name || "Campus Cell",
+            year: typeof yearValue === "number" ? `Year ${yearValue}` : null,
+            date: new Date(c.createdAt || Date.now()).toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }
+            ),
+            status:
+              c.status === "resolved"
+                ? "Resolved"
+                : c.status === "read"
+                  ? "In Progress"
+                  : "Pending",
+            student: c.user?.username || "Student",
+            officerNote: c.officerNote || "",
+          };
+        });
+
+        setComplaints(formatted);
       } catch (err) {
-        // Fallback to sample student grievances if DB is empty
-        setComplaints([
-          {
-            id: "CMP-1042",
-            subject: "Hostel 3rd floor water purifier filtration breakdown",
-            message: "Water dispenser dispensing turbid water since yesterday evening. Over 40 students affected in D-wing.",
-            department: "Hostel & Mess Cell",
-            date: "11 Sep 2026",
-            status: "In Progress",
-            officerNote: "Maintenance technician dispatched for filter cartridge replacement.",
-          },
-          {
-            id: "CMP-1038",
-            subject: "Library reading hall 5GHz Wi-Fi gateway timeout",
-            message: "Access point AP-24 in the library second floor drops connections every 5 minutes during study hours.",
-            department: "Campus IT Desk",
-            date: "02 Sep 2026",
-            status: "Resolved",
-            officerNote: "AP firmware updated and bandwidth allocation increased to 300 Mbps.",
-          },
-          {
-            id: "CMP-1011",
-            subject: "Classroom 204 audio microphone intermittent buzzing",
-            message: "Lecturer wireless mic system was picking up electrical static, disrupting classes.",
-            department: "Infrastructure Cell",
-            date: "22 Aug 2026",
-            status: "Resolved",
-            officerNote: "Replaced auxiliary cable and receiver unit.",
-          },
-        ]);
+        console.error("Failed to fetch complaints:", err);
+        setError("Unable to load complaints right now. Please try again.");
+        setComplaints([]);
       } finally {
         setLoading(false);
       }
@@ -98,7 +96,7 @@ export default function AllComplaints() {
   };
 
   const filteredComplaints = complaints.filter((c) => {
-    const matchesSearch = 
+    const matchesSearch =
       c.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.department.toLowerCase().includes(searchTerm.toLowerCase());
@@ -172,11 +170,10 @@ export default function AllComplaints() {
                 key={tab}
                 type="button"
                 onClick={() => setStatusFilter(tab)}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
-                  statusFilter.toLowerCase() === tab.toLowerCase()
-                    ? 'bg-teal-400 text-slate-950 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${statusFilter.toLowerCase() === tab.toLowerCase()
+                  ? 'bg-teal-400 text-slate-950 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+                  }`}
               >
                 {tab}
               </button>
@@ -189,6 +186,11 @@ export default function AllComplaints() {
           <div className="py-20 flex flex-col items-center justify-center gap-3 text-slate-600">
             <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
             <p className="text-xs">Loading complaint records...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-white border border-rose-200 rounded-2xl p-12 text-center text-rose-600 space-y-3">
+            <AlertCircle className="w-10 h-10 mx-auto text-rose-400 mb-1" />
+            <p className="text-sm font-semibold">{error}</p>
           </div>
         ) : filteredComplaints.length === 0 ? (
           <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 space-y-3">
@@ -222,6 +224,12 @@ export default function AllComplaints() {
                         <span className="text-xs font-semibold text-slate-700">
                           · {c.department}
                         </span>
+                        {c.year && (
+                          <span className="text-xs font-semibold text-slate-700">
+                            . {c.year}
+                          </span>
+                        )}
+
                         <span className="text-[11px] font-mono text-slate-500">
                           {c.date}
                         </span>
@@ -232,9 +240,8 @@ export default function AllComplaints() {
                     </div>
 
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border shrink-0 ${
-                        statusStyles[c.status] || statusStyles.Pending
-                      }`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border shrink-0 ${statusStyles[c.status] || statusStyles.Pending
+                        }`}
                     >
                       <StatusIcon className="w-3.5 h-3.5" />
                       {c.status}

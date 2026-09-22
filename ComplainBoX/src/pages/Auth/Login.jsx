@@ -342,7 +342,7 @@ export default function Login() {
             className="w-full flex items-center justify-center gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-xl py-2.5 text-sm text-slate-900 font-medium transition-all cursor-pointer"
           >
             <GoogleMark className="w-4 h-4" />
-            <span>Google Workspace</span>
+            <span>Continue Google</span>
           </button>
 
           {/* Footer toggle */}
