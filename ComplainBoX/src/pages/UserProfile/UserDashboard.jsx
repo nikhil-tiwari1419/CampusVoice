@@ -81,8 +81,8 @@ export default function UserDashboard() {
                 <FileText className="w-4 h-4" />
               </div>
             </div>
-            <h3 className="text-3xl font-extrabold text-slate-900">6</h3>
-            <p className="text-[11px] text-teal-700 mt-1 font-medium">Logged across 3 departments</p>
+            <h3 className="text-3xl font-extrabold text-slate-900"></h3>
+            <p className="text-[11px] text-teal-700 mt-1 font-medium">Logged across 2 programs</p>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md shadow-slate-200/40 backdrop-blur-xl hover:border-slate-300 transition-all">
@@ -92,7 +92,7 @@ export default function UserDashboard() {
                 <Clock className="w-4 h-4" />
               </div>
             </div>
-            <h3 className="text-3xl font-extrabold text-sky-700">2</h3>
+            <h3 className="text-3xl font-extrabold text-sky-700"></h3>
             <p className="text-[11px] text-slate-600 mt-1">Assigned to HOD & Hostel Warden</p>
           </div>
 
@@ -103,7 +103,7 @@ export default function UserDashboard() {
                 <CheckCircle2 className="w-4 h-4" />
               </div>
             </div>
-            <h3 className="text-3xl font-extrabold text-emerald-700">4</h3>
+            <h3 className="text-3xl font-extrabold text-emerald-700"></h3>
             <p className="text-[11px] text-slate-600 mt-1">100% satisfactory resolution rate</p>
           </div>
         </div>

@@ -96,6 +96,10 @@ export function AuthProvider({ children }) {
     return res.data
   }
 
+  const ConnectWithGoogle = async () => {
+    const res = await api.get('/oauth/google')
+    return res.data
+  }
   const value = {
     user,
     loading,
@@ -108,6 +112,7 @@ export function AuthProvider({ children }) {
     forgotPassword,
     resetPassword,
     checkAuth,
+    ConnectWithGoogle,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

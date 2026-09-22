@@ -12,7 +12,7 @@ export const USER_LINKS = [
     { label: 'Home', path: '/userdashboard', icon: House },
     { label: 'Profile', path: '/userprofile', icon: User },
     { label: 'Create Complaint', path: '/complain', icon: BarChart3 },
-    { label: 'My Complaints', path: '/allstudentcomplain', icon: Users },
+    { label: 'All Complaints', path: '/allstudentcomplain', icon: Users },
     { label: 'Feedback', path: '/feedback', icon: Headphones },
 ]
 

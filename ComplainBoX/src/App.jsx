@@ -6,7 +6,7 @@ import { AlertTriangle, ArrowLeft } from 'lucide-react'
 import Pageloader from './components/Pageloader'
 import MainLayout from './Layout/MainLayout'
 import { AuthProvider, useAuth } from './context/auth'
-import { ThemeProvider } from './context/theme'
+// import { ThemeProvider } from './context/theme'
 
 // pages
 const Userdashboard = lazy(() => import('./pages/UserProfile/UserDashboard'))
@@ -20,7 +20,7 @@ const Allusercomplain = lazy(()=> import('./pages/UserProfile/AllstudentComplain
 const Admindashboard = lazy(() => import('./pages/AdminProfile/AdminDashboard'))
 const AdminProfile = lazy(() => import('./pages/AdminProfile/AdminProfile'))
 const AllStudent = lazy(() => import('./pages/AdminProfile/AllStudents'))
-const NewComplain = lazy(() => import('./pages/AdminProfile/NewComplain'))
+const AllComplain = lazy(() => import('./pages/AdminProfile/AllComplain'))
 const CompletedComplain = lazy(() => import('./pages/AdminProfile/CompletedIssues'))
 
 
@@ -125,7 +125,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'newcomplain',
-        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(NewComplain)}</ProtectedRoute>
+        element: <ProtectedRoute allowedRoles='admin'>{withSuspense(AllComplain)}</ProtectedRoute>
       },
       {
         path: 'completedcomplain',
@@ -147,7 +147,6 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider>
       <AuthProvider>
         <Toaster
           position="top-left"
@@ -178,7 +177,6 @@ function App() {
         />
         <RouterProvider router={router} fallbackElement={<Pageloader />} />
       </AuthProvider>
-    </ThemeProvider>
   )
 }
 

@@ -39,7 +39,7 @@ export async function getMyBranchAllCompain(req, res) {
                 path: 'batch',
                 populate: [
                     { path: 'program' },
-                    { path: 'branch' }
+                    { path: 'branch' },
                 ]
             })
             .sort({ createdAt: -1 })

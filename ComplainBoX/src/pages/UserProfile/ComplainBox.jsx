@@ -62,7 +62,7 @@ export default function ComplainBox() {
         isAnonymous: formData.isAnonymous
       }
 
-      await api.post('/send/complain', payload)
+      await api.post('/user/complain', payload)
 
       toast.success('Complaint registered and dispatched to administration!')
       setFormData({
