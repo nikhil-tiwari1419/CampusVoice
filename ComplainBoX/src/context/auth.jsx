@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
-
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
-// Axios instance — sends cookies with every request
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
@@ -14,9 +12,8 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true) // true while checking session on load
+  const [loading, setLoading] = useState(true)
 
-  // Check if user is already logged in (cookie-based session)
   const checkAuth = useCallback(async () => {
     try {
       const res = await api.get('/auth/is-auth')
@@ -32,7 +29,6 @@ export function AuthProvider({ children }) {
     checkAuth()
   }, [checkAuth])
 
-  // Axios response interceptor — auto-refresh access token on 401, then retry once
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
       (response) => response,
@@ -48,7 +44,7 @@ export function AuthProvider({ children }) {
           originalRequest._retry = true
           try {
             await api.post('/auth/refresh-token')
-            return api(originalRequest) // retry the original request
+            return api(originalRequest)
           } catch (refreshErr) {
             setUser(null)
             return Promise.reject(refreshErr)
@@ -64,7 +60,7 @@ export function AuthProvider({ children }) {
 
   const register = async ({ username, email, password }) => {
     const res = await api.post('/auth/register', { username, email, password })
-    return res.data // { success, message } — user still needs to verify email via OTP
+    return res.data
   }
 
   const verifyEmail = async ({ email, otp }) => {
@@ -72,8 +68,8 @@ export function AuthProvider({ children }) {
     return res.data
   }
 
-  const login = async ({ email, username, password }) => {
-    const res = await api.post('/auth/login', { email, username, password })
+  const login = async ({ email, password }) => {
+    const res = await api.post('/auth/login', { email, password })
     setUser(res.data.user)
     return res.data
   }
@@ -96,15 +92,18 @@ export function AuthProvider({ children }) {
     return res.data
   }
 
-  const ConnectWithGoogle = async () => {
-    const res = await api.get('/oauth/google')
-    return res.data
+  // Full-page redirect — Google OAuth is NOT an axios call, browser must navigate
+  const connectWithGoogle = () => {
+    window.location.href = `${API_URL}/oauth/google`
   }
+
   const value = {
     user,
     loading,
     isAuthenticated: !!user,
     isAdmin: user?.role === 'admin',
+    isSuperAdmin: user?.role === 'super_admin',
+    isStudent: user?.role === 'student',
     register,
     verifyEmail,
     login,
@@ -112,7 +111,7 @@ export function AuthProvider({ children }) {
     forgotPassword,
     resetPassword,
     checkAuth,
-    ConnectWithGoogle,
+    connectWithGoogle,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -12,9 +12,10 @@ import {
   PlusCircle,
   MessageSquare,
   AlertCircle,
-  Loader2
+  Loader2,
+  Delete
 } from "lucide-react";
-import { getComplain } from "../../api/user";
+import { getComplain, deleteComplain } from "../../api/user";
 
 export default function AllComplaints() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +41,7 @@ export default function AllComplaints() {
         console.log("RAW COMPLAINTS:", list)
 
         const formatted = list.map((c) => {
-          const yearValue = c.batch?.year; 
+          const yearValue = c.batch?.year;
 
           return {
             id: c._id || `CMP-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -81,11 +82,27 @@ export default function AllComplaints() {
     fetchComplaints();
   }, []);
 
+  // delete complainn 
+  async function handleDelete(complainId) {
+    const confirmed = window.confirm("are you sure you wan to delete thi complain")
+    if (!confirmed) return;
+
+    try {
+      await deleteComplain(complainId);
+      setComplaints((prev) => prev.filter((c) => c.id !== complainId));
+    } catch (error) {
+      console.error("Failed to delete complaint:", err);
+      alert(err.response?.data?.message || "Unable to delete this complaint.");
+    }
+  }
+
+
   const statusStyles = {
     Resolved: "bg-teal-500/10 border-teal-500/20 text-teal-600",
     "In Progress": "bg-sky-500/10 border-sky-500/20 text-sky-600",
     Pending: "bg-amber-500/10 border-amber-500/20 text-amber-600",
     Rejected: "bg-rose-500/10 border-rose-500/20 text-rose-600",
+    Delete: "bg-red-500 text-white",
   };
 
   const statusIcons = {
@@ -246,6 +263,11 @@ export default function AllComplaints() {
                       <StatusIcon className="w-3.5 h-3.5" />
                       {c.status}
                     </span>
+                    <button className={`inline-flex items-center py-3 px-3 cursor-pointer rounded-lg text-xs font-semibold border ${statusStyles.Delete}`}
+                    onClick={() => handleDelete(c.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
 
                   {c.message && (

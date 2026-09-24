@@ -1,6 +1,7 @@
 import complaintModel from "../model/complainBox.model.js";
 import BatchModel from "../model/Batch.model.js";
 import userModel from "../model/user.model.js"
+import Vote from '../model/vote.model.js'
 import { sendComplainConfirmation, sendComplainEmailNotification } from '../utils/mailer.js'
 
 
@@ -21,7 +22,7 @@ export async function Writecomplain(req, res) {
                 message: "student not found"
             });
         }
-        
+
         if (!user.isProfileComplete) {
             return res.status(403).json({
                 success: false,
@@ -64,3 +65,55 @@ export async function Writecomplain(req, res) {
     }
 }
 
+export async function deleteComplain(req, res) {
+    try {
+        const userId = req.user.id;
+        const { complaintId } = req.params;
+
+        const complaint = await complaintModel.findById(complaintId);
+
+        if (!complaint) {
+            return res.status(404).json({
+                success: false,
+                message: "Complaint not found"
+            });
+        }
+
+        //check uwnerchip
+        if (String(complaint.user) !== String(userId)) {
+            return res.status(403).json({
+                success: false,
+                message: "You can only delete your own complaint"
+            });
+        }
+
+        // Time window check  1 houre 
+
+        const ONE_HOUR_MS = 60 * 60 * 1000;
+        const timeSinceCreation = Date.now() - new Date(complaint.createdAt).getTime();
+
+        if (timeSinceCreation > ONE_HOUR_MS) {
+            return res.status(403).json({
+                success: false,
+                message: "This complaint can no longer be deleted. The 1-hour edit window has expired."
+            });
+        }
+
+        // Delete the complaint and its votes (cleanup)
+        await Vote.deleteMany({ complaint: complaintId });
+        await complaintModel.deleteOne({ _id: complaintId });
+
+        return res.status(200).json({
+            success: true,
+            message: "Complaint deleted successfully"
+        });
+
+    } catch (error) {
+
+        console.error("deleteComplain error:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error deleting complaint"
+        });
+    }
+}

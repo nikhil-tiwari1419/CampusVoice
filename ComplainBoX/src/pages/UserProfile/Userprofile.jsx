@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
-import { getUserProfile, completeUserProfile } from "../../api/user"; // adjust path/names to match your actual exports
+import { getUserProfile, completeUserProfile, getPrograms, getBranches } from "../../api/user";
 import {
   GraduationCap,
   Building2,
@@ -20,16 +20,6 @@ import {
   Lock,
 } from "lucide-react";
 
-const PROGRAM_OPTIONS = [
-  { name: "BCA", numYears: 4 },
-  { name: "BSC", numYears: 3 },
-];
-
-const BRANCH_OPTIONS = {
-  BCA: ["General"],
-  BSC: ["Data Science", "Artificial Intelligence", "Cybersecurity", "Physics", "Chemistry"],
-};
-
 export default function UserProfile() {
   const { checkAuth } = useAuth();
 
@@ -40,15 +30,37 @@ export default function UserProfile() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [profileData, setProfileData] = useState(null);
 
+  // Dropdown data from backend
+  const [programs, setPrograms] = useState([]);
+  const [branches, setBranches] = useState([]);
+  const [loadingBranches, setLoadingBranches] = useState(false);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     phone: "",
-    program: "BCA",
-    branch: "",
+    program: "",       // will hold Program _id
+    programName: "",    // for display purposes
+    branch: "",         // will hold Branch _id (or "" if program has no branches)
+    hasBranches: false,
     year: "1",
     sem: "1",
   });
+
+  // Fetch programs list once on mount
+  useEffect(() => {
+    async function fetchPrograms() {
+      try {
+        const result = await getPrograms();
+        const list = result?.data || [];
+        setPrograms(list);
+      } catch (err) {
+        console.error("Could not fetch programs:", err);
+        toast.error("Unable to load program list");
+      }
+    }
+    fetchPrograms();
+  }, []);
 
   // Fetch full student profile
   useEffect(() => {
@@ -62,15 +74,18 @@ export default function UserProfile() {
 
         if (student) {
           setProfileData(student);
-          setFormData({
+          setFormData((prev) => ({
+            ...prev,
             username: student.username || "",
             email: student.email || "",
             phone: student.phone ? String(student.phone) : "",
-            program: student.batch?.program?.name || "BCA",
-            branch: student.batch?.branch?.name || "",
+            program: student.batch?.program?._id || "",
+            programName: student.batch?.program?.name || "",
+            branch: student.batch?.branch?._id || "",
+            hasBranches: student.batch?.program?.hasBranches || false,
             year: student.batch?.year ? String(student.batch.year) : "1",
             sem: student.sem ? String(student.sem) : "1",
-          });
+          }));
         }
       } catch (err) {
         console.error("Could not fetch profile:", err);
@@ -83,17 +98,42 @@ export default function UserProfile() {
     fetchUserProfile();
   }, []);
 
+  // When program changes — fetch its branches (if any) and reset branch/year/sem
+  const handleProgramChange = async (e) => {
+    const selectedProgramId = e.target.value;
+    const selectedProgram = programs.find((p) => p._id === selectedProgramId);
+
+    setFormData((prev) => ({
+      ...prev,
+      program: selectedProgramId,
+      programName: selectedProgram?.name || "",
+      hasBranches: selectedProgram?.hasBranches || false,
+      branch: "",
+      year: "1",
+      sem: "1",
+    }));
+
+    setBranches([]);
+
+    if (selectedProgram?.hasBranches) {
+      setLoadingBranches(true);
+      try {
+        const result = await getBranches(selectedProgramId);
+        setBranches(result?.data || []);
+      } catch (err) {
+        console.error("Could not fetch branches:", err);
+        toast.error("Unable to load branches for this program");
+      } finally {
+        setLoadingBranches(false);
+      }
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "program") {
-      setFormData((prev) => ({
-        ...prev,
-        program: value,
-        branch: value === "BCA" ? "" : BRANCH_OPTIONS[value]?.[0] || "",
-        year: "1",
-        sem: "1",
-      }));
+      handleProgramChange(e);
       return;
     }
 
@@ -111,15 +151,22 @@ export default function UserProfile() {
 
   const selectedYearNum = Number(formData.year) || 1;
   const validSemesters = [selectedYearNum * 2 - 1, selectedYearNum * 2];
+  const selectedProgramData = programs.find((p) => p._id === formData.program);
+  const maxYears = selectedProgramData?.numYears || 4;
 
   const handleInitiateSave = (e) => {
     e?.preventDefault?.();
+
+    if (!formData.program) {
+      toast.error("Please select a program");
+      return;
+    }
     if (!formData.phone || formData.phone.trim().length < 10) {
       toast.error("Please enter a valid 10-digit mobile number");
       return;
     }
-    if (formData.program !== "BCA" && !formData.branch.trim()) {
-      toast.error(`Please select a branch for ${formData.program}`);
+    if (formData.hasBranches && !formData.branch) {
+      toast.error(`Please select a branch for ${formData.programName}`);
       return;
     }
     setShowProfileModal(false);
@@ -130,8 +177,8 @@ export default function UserProfile() {
     setSaving(true);
     try {
       const payload = {
-        program: formData.program,
-        branch: formData.program === "BCA" ? "" : formData.branch,
+        program: formData.program,                          // ObjectId
+        branch: formData.hasBranches ? formData.branch : "", // ObjectId or empty
         year: Number(formData.year),
         sem: Number(formData.sem),
         phone: formData.phone.trim(),
@@ -151,6 +198,7 @@ export default function UserProfile() {
   };
 
   const isProfileComplete = Boolean(profileData?.isProfileComplete);
+  const selectedBranchName = branches.find((b) => b._id === formData.branch)?.name;
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-slate-50 via-white to-teal-50/30 text-slate-900 font-sans overflow-hidden select-none py-8 px-4 sm:px-6 lg:py-12">
@@ -263,7 +311,7 @@ export default function UserProfile() {
                 <GraduationCap className="w-4 h-4" />
                 <span className="text-xs uppercase font-bold tracking-wider">Program</span>
               </div>
-              <p className="font-semibold text-slate-900">{formData.program}</p>
+              <p className="font-semibold text-slate-900">{formData.programName || "Pending..."}</p>
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
@@ -272,7 +320,7 @@ export default function UserProfile() {
                 <span className="text-xs uppercase font-bold tracking-wider">Branch</span>
               </div>
               <p className="font-semibold text-slate-900">
-                {formData.program === "BCA" ? "Core BCA" : formData.branch || "Pending..."}
+                {!formData.hasBranches ? "Core (No Branch)" : selectedBranchName || "Pending..."}
               </p>
             </div>
 
@@ -355,8 +403,9 @@ export default function UserProfile() {
                     disabled={saving}
                     className="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-3 px-4 text-sm text-slate-900 outline-none transition-all disabled:opacity-50 cursor-pointer font-medium"
                   >
-                    {PROGRAM_OPTIONS.map((prog) => (
-                      <option key={prog.name} value={prog.name}>
+                    <option value="">Select Program</option>
+                    {programs.map((prog) => (
+                      <option key={prog._id} value={prog._id}>
                         {prog.name} ({prog.numYears} Years)
                       </option>
                     ))}
@@ -368,13 +417,17 @@ export default function UserProfile() {
                     <Building2 className="w-4 h-4 text-teal-600" />
                     Branch / Specialization
                   </label>
-                  {formData.program === "BCA" ? (
+                  {!formData.hasBranches ? (
                     <input
                       type="text"
                       disabled
-                      value="Core BCA (No Branch Division)"
+                      value={formData.program ? "Core (No Branch Division)" : "Select a program first"}
                       className="w-full bg-slate-100 border border-slate-200 rounded-xl py-3 px-4 text-sm text-slate-500 outline-none opacity-60 cursor-not-allowed font-medium"
                     />
+                  ) : loadingBranches ? (
+                    <div className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm text-slate-500 flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" /> Loading branches...
+                    </div>
                   ) : (
                     <select
                       name="branch"
@@ -384,9 +437,9 @@ export default function UserProfile() {
                       className="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-3 px-4 text-sm text-slate-900 outline-none transition-all disabled:opacity-50 cursor-pointer font-medium"
                     >
                       <option value="">Select Branch</option>
-                      {(BRANCH_OPTIONS[formData.program] || []).map((b) => (
-                        <option key={b} value={b}>
-                          {b}
+                      {branches.map((b) => (
+                        <option key={b._id} value={b._id}>
+                          {b.name}
                         </option>
                       ))}
                     </select>
@@ -402,13 +455,14 @@ export default function UserProfile() {
                     name="year"
                     value={formData.year}
                     onChange={handleChange}
-                    disabled={saving}
+                    disabled={saving || !formData.program}
                     className="w-full bg-slate-50/80 border border-slate-200 hover:border-slate-300 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl py-3 px-4 text-sm text-slate-900 outline-none transition-all disabled:opacity-50 cursor-pointer font-medium"
                   >
-                    <option value="1">1st Year</option>
-                    <option value="2">2nd Year</option>
-                    <option value="3">3rd Year</option>
-                    {formData.program !== "BSC" && <option value="4">4th Year</option>}
+                    {Array.from({ length: maxYears }, (_, i) => i + 1).map((y) => (
+                      <option key={y} value={y}>
+                        Year {y}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -509,12 +563,12 @@ export default function UserProfile() {
               </p>
               <div className="flex justify-between py-1.5">
                 <span className="text-slate-700 font-medium">Degree Program:</span>
-                <span className="font-bold text-teal-700">{formData.program}</span>
+                <span className="font-bold text-teal-700">{formData.programName}</span>
               </div>
               <div className="flex justify-between py-1.5">
                 <span className="text-slate-700 font-medium">Branch / Specialization:</span>
                 <span className="font-bold text-slate-800">
-                  {formData.program === "BCA" ? "Core BCA" : formData.branch || "Not Specified"}
+                  {!formData.hasBranches ? "Core (No Branch)" : selectedBranchName || "Not Specified"}
                 </span>
               </div>
               <div className="flex justify-between py-1.5">
