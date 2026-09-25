@@ -8,7 +8,12 @@ const complaintSchema = new mongoose.Schema({
     },
     batch: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Batch',
+        ref: 'Batch',
+        required: true
+    },
+    categories: {
+        type: String,
+        enum: ['Hostel & Mess', 'Academics', 'Campus Techinical', 'Infrastructure', 'Anti-Ragging', 'Other Support'],
         required: true
     },
     subject: {
@@ -20,6 +25,10 @@ const complaintSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    isAnonymous: {
+        type: Boolean,
+        default: false
+    },
     status: {
         type: String,
         enum: ['new', 'read', 'resolved'],
@@ -29,4 +38,3 @@ const complaintSchema = new mongoose.Schema({
 
 const complaintModel = mongoose.model('Complaint', complaintSchema);
 export default complaintModel;
-

@@ -78,7 +78,7 @@ export async function createAdmin(req, res) {
             isVerified: true,
             managedProgram: managedProgram,
             managedBranch: managedBranch,
-            createdAt: req.user.id // super_admin
+            createdBy: req.user.id // super_admin
         });
 
         return res.status(201).json({

@@ -49,13 +49,26 @@ export async function getMyBranchAllCompain(req, res) {
             complaints.map(async (complaint) => {
                 const voteCount = await Vote.countDocuments({ complaint: complaint._id });
                 const hasVoted = await Vote.exists({ complaint: complaint._id, user: userId });
-                return { ...complaint, voteCount, hasVoted: !!hasVoted };
+
+                // flag for private 
+                // now it  is for all categoeries leter we can make it for only Anti - ragging ke liye 
+                const isOwncomplain = String(complaint.user._id) === String(userId);
+                const displayUser = (complaint.isAnonymous && !isOwncomplain)
+                    ? { username: "Anonymous", email: null }
+                    : complaint.user;
+
+                return {
+                    ...complaint,
+                    user: displayUser,
+                    voteCount,
+                    hasVoted: !!hasVoted
+                };
             })
         );
         return res.status(200).json({
             success: true,
             message: complaints.length === 0 ? "No complaints found for this batch" : "Complaints found",
-            data:complaintsWithVotes
+            data: complaintsWithVotes
         });
 
     } catch (error) {

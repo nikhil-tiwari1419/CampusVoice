@@ -7,8 +7,14 @@ import { sendComplainConfirmation, sendComplainEmailNotification } from '../util
 
 export async function Writecomplain(req, res) {
     try {
-        const { subject, message } = req.body;
-        if (!message) {
+        const { subject, message, categories } = req.body;
+        if (!categories) {
+            return res.status(400).json({
+                success: false,
+                message: "please select categories"
+            })
+        }
+        if (!subject || !message) {
             return res.status(400).json({
                 success: false,
                 message: "All field's are required"
@@ -33,6 +39,7 @@ export async function Writecomplain(req, res) {
             user: req.user.id,
             batch: user.batch,
             subject: subject,
+            categories: categories,
             message,
         });
 
