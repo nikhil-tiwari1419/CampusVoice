@@ -44,11 +44,10 @@ function Navbar() {
             handleSectionClick(item.section)
             onClick?.()
           }}
-          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 sm:text-2xl text-sm font-medium ${
-            activeSection === item.section
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 sm:text-2xl text-sm font-medium ${activeSection === item.section
               ? 'bg-gray-300 text-white shadow-lg shadow-blue-600/30'
               : 'text-gray-800 hover:text-gray-900 hover:bg-gray-100'
-          }`}
+            }`}
         >
           {item.icon && <item.icon className="sm:w-8 sm:h-8 w-4 h-4" />}
           <span>{item.label}</span>
@@ -61,10 +60,9 @@ function Navbar() {
         to={item.path}
         onClick={onClick}
         className={({ isActive }) =>
-          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xl font-medium ${
-            isActive
-              ? 'bg-cyan-100 text-black shadow-lg shadow-gray-600/30'
-              : 'text-gray-800 hover:text-gray-900 hover:bg-gray-100'
+          `flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xl font-medium ${isActive
+            ? 'bg-cyan-100 text-black shadow-lg shadow-gray-600/30'
+            : 'text-gray-800 hover:text-gray-900 hover:bg-gray-100'
           }`
         }
       >
@@ -120,10 +118,9 @@ function Navbar() {
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  `px-5 py-3 rounded-lg  text-2xl font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-teal-600 text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  `px-5 py-3 rounded-lg  text-2xl font-medium transition-all duration-200 ${isActive
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`
                 }
               >

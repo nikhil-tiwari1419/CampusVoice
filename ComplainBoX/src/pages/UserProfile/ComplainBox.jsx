@@ -1,26 +1,24 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { 
-  FileText, 
-  MessageSquare, 
-  Send, 
-  Clock, 
-  ShieldCheck, 
-  Loader2, 
-  Building2, 
-  Utensils, 
-  BookOpen, 
-  Wifi, 
-  Layers, 
-  CheckCircle2,
-  AlertCircle
+import {
+  FileText,
+  MessageSquare,
+  Send,
+  Clock,
+  ShieldCheck,
+  Loader2,
+  Building2,
+  Utensils,
+  BookOpen,
+  Wifi,
+  Layers,
 } from 'lucide-react'
-import api from '../../context/auth'
+import { writeComplain } from '../../api/user'
 
 export default function ComplainBox() {
   const navigate = useNavigate()
-  const [department, setDepartment] = useState('Hostel & Mess')
+  const [department, setDepartment] = useState('')
   const [formData, setFormData] = useState({
     subject: '',
     description: '',
@@ -31,7 +29,7 @@ export default function ComplainBox() {
   const categories = [
     { name: 'Hostel & Mess', icon: Utensils },
     { name: 'Academics', icon: BookOpen },
-    { name: 'Campus Wi-Fi', icon: Wifi },
+    { name: 'Campus Techinical', icon: Wifi },
     { name: 'Infrastructure', icon: Building2 },
     { name: 'Anti-Ragging', icon: ShieldCheck },
     { name: 'Other Support', icon: Layers },
@@ -39,14 +37,19 @@ export default function ComplainBox() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
-    setFormData((prev) => ({ 
-      ...prev, 
-      [name]: type === 'checkbox' ? checked : value 
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
     }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!department) {
+      toast.error('Please select a department/category')
+      return
+    }
 
     if (!formData.subject.trim() || !formData.description.trim()) {
       toast.error('Please fill in both the subject and description')
@@ -55,14 +58,14 @@ export default function ComplainBox() {
 
     setLoading(true)
     try {
-      // Backend expects { subject, message } at POST /api/send/complain
       const payload = {
-        subject: `[${department}] ${formData.subject.trim()}`,
+        subject: formData.subject.trim(),
         message: formData.description.trim(),
+        categories: department,
         isAnonymous: formData.isAnonymous
       }
 
-      await api.post('/user/complain', payload)
+      await writeComplain(payload)
 
       toast.success('Complaint registered and dispatched to administration!')
       setFormData({
@@ -70,6 +73,7 @@ export default function ComplainBox() {
         description: '',
         isAnonymous: false,
       })
+      setDepartment('')
       navigate('/complaints')
     } catch (err) {
       console.error('Complaint submission error:', err)
@@ -82,11 +86,9 @@ export default function ComplainBox() {
 
   return (
     <div className="relative min-h-screen w-full bg-white py-12 px-4 sm:px-6 overflow-hidden select-none font-sans flex items-center justify-center">
-      {/* Background ambient lighting */}
       <div className="absolute top-1/6 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-teal-500/10 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[350px] h-[250px] bg-indigo-500/5 rounded-full blur-[110px] pointer-events-none" />
 
-      {/* Subtle background grid pattern */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
@@ -97,7 +99,6 @@ export default function ComplainBox() {
       />
 
       <div className="relative w-full max-w-2xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-semibold mb-3">
             <span className="relative flex h-1.5 w-1.5">
@@ -115,11 +116,9 @@ export default function ComplainBox() {
           </p>
         </div>
 
-        {/* Complaint Card */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-slate-200/40 backdrop-blur-xl">
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
 
-            {/* Department Category Pills */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-2">
                 Select Department / Cell
@@ -133,11 +132,10 @@ export default function ComplainBox() {
                       key={cat.name}
                       type="button"
                       onClick={() => setDepartment(cat.name)}
-                      className={`py-2.5 px-3 rounded-xl border font-semibold text-left transition-all flex items-center gap-2 cursor-pointer ${
-                        isSelected
+                      className={`py-2.5 px-3 rounded-xl border font-semibold text-left transition-all flex items-center gap-2 cursor-pointer ${isSelected
                           ? 'border-teal-500/50 bg-teal-500/10 text-teal-700 shadow-sm'
                           : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-slate-900 hover:border-slate-300'
-                      }`}
+                        }`}
                     >
                       <Icon className="w-4 h-4 shrink-0" />
                       <span className="truncate">{cat.name}</span>
@@ -147,7 +145,6 @@ export default function ComplainBox() {
               </div>
             </div>
 
-            {/* Subject */}
             <div>
               <label htmlFor="subject" className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Subject
@@ -166,7 +163,6 @@ export default function ComplainBox() {
               </div>
             </div>
 
-            {/* Description */}
             <div>
               <label htmlFor="description" className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Detailed Description
@@ -185,7 +181,6 @@ export default function ComplainBox() {
               </div>
             </div>
 
-            {/* Anonymity Toggle */}
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
               <div>
                 <p className="text-xs font-semibold text-slate-900">Submit Anonymously</p>
@@ -205,7 +200,6 @@ export default function ComplainBox() {
               </label>
             </div>
 
-            {/* Privacy / Security Notice */}
             <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-100 border border-slate-200/70 text-slate-600 text-xs">
               <ShieldCheck className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
               <span>
@@ -213,7 +207,6 @@ export default function ComplainBox() {
               </span>
             </div>
 
-            {/* Submit Action */}
             <button
               type="submit"
               disabled={loading}
@@ -234,7 +227,6 @@ export default function ComplainBox() {
           </form>
         </div>
 
-        {/* Turnaround Note */}
         <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 mt-6">
           <Clock className="w-3.5 h-3.5" />
           <span>Complaints are typically reviewed within 24–48 working hours.</span>
