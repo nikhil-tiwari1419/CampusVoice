@@ -19,7 +19,7 @@ router.post('/verify-email', limiter.otpLimiter, verifyEmail)
 router.post('/login', limiter.loginLimiter, login)
 router.post('/logout', logOut)
 router.post('/forgot-pass', limiter.forgotLimiter, forgotPassword)
-router.post('/reset-pass', limiter.otpLimiter, resetPassword)
+router.post('/reset-pass', limiter.otpLimiter,registerUserValidationRules, resetPassword)
 router.get('/is-auth', verifyToken, authorize("student", "admin", "super_admin"), IsAuth)
 router.post('/refresh-token', refreshAccessToken)
 

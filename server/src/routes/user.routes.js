@@ -4,8 +4,9 @@ import { getMyBranchAllCompain, getProfile, UserProfile } from '../controller/us
 import { deleteComplain, Writecomplain } from '../controller/complainBox.controller.js';
 import { checkProfileComplete } from '../middleware/complain.middelware.js';
 import { togglevote, getVoteStatus } from '../controller/vote.controller.js';
+import limiter from '../limiter/complain.limiter.js'
 const router = express.Router();
-router.post('/complain', verifyToken, authorize('student'), Writecomplain)
+router.post('/complain', verifyToken, authorize('student'),limiter.sendComplain, Writecomplain)
 router.get('/getComplain', verifyToken, authorize('student'), checkProfileComplete, getMyBranchAllCompain)
 router.patch('/create-profile', verifyToken, authorize('student'), UserProfile)
 router.get('/get-profile', verifyToken, authorize('student'), getProfile)
