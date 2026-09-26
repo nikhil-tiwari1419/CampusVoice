@@ -38,6 +38,7 @@ if(!process.env.BREVO_SENDER_EMAIL) {
   console.error(" sdmin email is not provided");
   process.exit(1)
 }
+
 const config = {
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -48,6 +49,7 @@ const config = {
   CLIENT_URL: process.env.CLIENT_URL,
   NODE_ENV: process.env.NODE_ENV,
   BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL,
+  PORT:process.env.PORT || 3000
 }
 
 export default config;
