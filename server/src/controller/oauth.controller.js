@@ -45,7 +45,7 @@ export const googleCallback = async (req, res) => {
         // console.error("ERROR STACK:", error.stack);
 
         console.error("Error in googleCallback:", error);
-        res.status(302)
+        return res.status(302)
             .set("Location", `${config.CLIENT_URL}/login?error=server_error`)
             .end();
     }
