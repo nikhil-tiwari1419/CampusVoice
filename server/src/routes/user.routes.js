@@ -10,7 +10,7 @@ router.get('/getComplain', verifyToken, authorize('student'), checkProfileComple
 router.patch('/create-profile', verifyToken, authorize('student'), UserProfile)
 router.get('/get-profile', verifyToken, authorize('student'), getProfile)
 
-router.delete('/complain/:complainId', verifyToken, authorize('student'), deleteComplain)
+router.delete('/complaint/:complaintId', verifyToken, authorize('student'), deleteComplain)
 router.post('/complaint/:complaintId/vote', verifyToken, authorize('student'), togglevote);
 router.get('/complaint/:complaintId/vote-status', verifyToken, authorize('student'), getVoteStatus);
 export default router;

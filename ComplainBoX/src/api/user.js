@@ -77,7 +77,7 @@ export async function giveVote(complaintId) {
 
 export async function deleteComplain(complaintId) {
   try {
-    const res = await api.delete(`/user/complain/${complaintId}`)
+    const res = await api.delete(`/user/complaint/${complaintId}`)
     return res.data
   } catch (error) {
     console.error("Error is happening in delete complain")

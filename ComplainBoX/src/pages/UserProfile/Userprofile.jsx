@@ -63,41 +63,69 @@ export default function UserProfile() {
   }, []);
 
   // Fetch full student profile
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        setLoadingProfile(true);
-        setProfileError(null);
+ useEffect(() => {
+  async function fetchUserProfile() {
+    try {
+      setLoadingProfile(true);
+      setProfileError(null);
 
-        const result = await getUserProfile();
-        const student = result?.data ?? result;
+      const result = await getUserProfile();
+      const student = result?.data ?? result;
 
-        if (student) {
-          setProfileData(student);
-          setFormData((prev) => ({
-            ...prev,
-            username: student.username || "",
-            email: student.email || "",
-            phone: student.phone ? String(student.phone) : "",
-            program: student.batch?.program?._id || "",
-            programName: student.batch?.program?.name || "",
-            branch: student.batch?.branch?._id || "",
-            hasBranches: student.batch?.program?.hasBranches || false,
-            year: student.batch?.year ? String(student.batch.year) : "1",
-            sem: student.sem ? String(student.sem) : "1",
-          }));
+      if (student) {
+        setProfileData(student);
+
+        const programId = student.batch?.program?._id || "";
+        const hasBranches =
+          student.batch?.program?.hasBranches || false;
+        const branchId = student.batch?.branch?._id || "";
+
+        setFormData((prev) => ({
+          ...prev,
+          username: student.username || "",
+          email: student.email || "",
+          phone: student.phone ? String(student.phone) : "",
+          program: programId,
+          programName: student.batch?.program?.name || "",
+          branch: branchId,
+          hasBranches,
+          year: student.batch?.year
+            ? String(student.batch.year)
+            : "1",
+          sem: student.sem ? String(student.sem) : "1",
+        }));
+
+        // IMPORTANT:
+        // On refresh, handleProgramChange() doesn't run,
+        // so branches must be loaded manually.
+        if (programId && hasBranches) {
+          try {
+            setLoadingBranches(true);
+
+            const branchResult = await getBranches(programId);
+
+            setBranches(branchResult?.data || []);
+          } catch (err) {
+            console.error("Could not fetch branches:", err);
+            toast.error("Unable to load branches");
+          } finally {
+            setLoadingBranches(false);
+          }
         }
-      } catch (err) {
-        console.error("Could not fetch profile:", err);
-        setProfileError("Unable to load your profile right now. Please refresh the page.");
-      } finally {
-        setLoadingProfile(false);
       }
+    } catch (err) {
+      console.error("Could not fetch profile:", err);
+      setProfileError(
+        "Unable to load your profile right now. Please refresh the page."
+      );
+    } finally {
+      setLoadingProfile(false);
     }
+  }
 
-    fetchUserProfile();
-  }, []);
-
+  fetchUserProfile();
+}, []);
+  
   // When program changes — fetch its branches (if any) and reset branch/year/sem
   const handleProgramChange = async (e) => {
     const selectedProgramId = e.target.value;

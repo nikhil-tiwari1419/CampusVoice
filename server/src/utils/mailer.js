@@ -114,6 +114,7 @@ export async function sendComplainEmailNotification(populateComplain) {
                 <h2>New Complaint Arrived from ${programName} - Year ${year}</h2>
                 <p><strong>Student name</strong> = ${populateComplain.user.username}</p>
                 <p><strong>Student email</strong> = ${populateComplain.user.email}</p>
+                <p><strong>categories</strong> = ${populateComplain.categories}</p>
                 <p><strong>Complaint</strong> = ${populateComplain.message}</p>
             `)
         });

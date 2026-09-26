@@ -31,7 +31,7 @@ const complaintSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'read', 'resolved'],
+        enum: ['new', 'inprogress', 'resolved'],
         default: 'new'
     }
 }, { timestamps: true });
